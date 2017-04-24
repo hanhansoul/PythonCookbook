@@ -74,7 +74,96 @@ def section_3_4():
 
 def section_3_5():
 	"""
-	
+	3.5. Packing and Unpacking Large Integers from Bytes
+	整型数与字节串的转换
+	int.from_bytes()
+	"""
+	pass
+
+def section_3_6():
+	"""
+	3.6. Performing Complex-Valued Math
+	实现复数运算
+
+	complex(real, imag)
 	"""
 
-section_3_4()
+	def test1():
+		a = complex(2, 4)
+		b = 3 - 5j
+		print(a, b)
+		print(a.real, a.imag, a.conjugate())
+
+	test1()
+
+def section_3_7():
+	"""
+	3.7. Working with Infinity and NaNs
+	"""
+	import math
+
+	def test1():
+		a = float('inf')
+		b = float('-inf')
+		c = float('nan')
+		print(a, b, c)
+
+	def test2():
+		c = float('nan')
+		d = float('nan')
+		print(c == d)
+		print(c is d)
+		print(math.isnan(c))
+
+	test2()
+
+def section_3_8():
+	"""
+	3.8. Calculating with Fractions
+	fractions.Fraction
+	"""
+	from fractions import Fraction
+
+	def test1():
+		a = Fraction(5, 4)
+		b = Fraction(7, 16)
+		print(a + b)
+		print(a * b)
+		c = a * b
+		print(c.numerator, c.denominator)
+		print(float(c))
+		print(c.limit_denominator(8))
+		x = 3.75
+		print(Fraction(*x.as_integer_ratio()))
+
+	test1()
+
+def section_3_9():
+	"""
+	3.9. Calculating with Large Numerical Arrays
+	NumPy库
+	// TO-DO
+	"""
+	def test1():
+		x = [1, 2, 3, 4]
+		y = [5, 6, 7, 8]
+		print(x * 2)
+		# print(x + 10)
+		print(x + y)
+
+	def test2():
+		# import numpy as np
+		#
+		# ax = np.array([1, 2, 3, 4])
+		# ay = np.array([5, 6, 7, 8])
+		pass
+
+	test2()
+
+def section_3_10():
+	"""
+	3.10. Performing Matrix and Linear Algebra Calculations
+	// TO-DO
+	"""
+	pass
+
