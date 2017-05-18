@@ -1,12 +1,24 @@
 def chapter_7_1():
 	"""
 	7.1. Writing Functions That Accept Any Number of Arguments
+
+	变长的函数参数列表
+	*args 以tuple参数形式传入
+	**kwargs 以dict参数形式传入
 	"""
 
-	def fun(*args, **kwargs):
+	def test1(*args, **kwargs):
 		print(args)  # tuple
 		print(kwargs)  # dict
 
+	def test2(first, *rest, **rest_rest):
+		print(first)
+		print(rest)
+		print(rest_rest)
+
+	test2(1, 2, 3, 4, a=1, b=2, c=4)
+
+chapter_7_1()
 
 def chapter_7_2():
 	"""
@@ -21,7 +33,6 @@ def chapter_7_2():
 	# recv(1024, True)
 	recv(1024, block=True)
 
-
 def chapter_7_3():
 	"""
 	7.3. Attaching Informational Metadata to Function Arguments
@@ -34,7 +45,6 @@ def chapter_7_3():
 	print(add('a', 'b'))
 	print('a' + 'b')
 
-
 def chapter_7_4():
 	"""
 	7.4. Returning Multiple Values from a Function
@@ -46,7 +56,6 @@ def chapter_7_4():
 
 	a, b, c = myfun()
 	print(a, b, c, sep='\n')
-
 
 def chapter_7_5():
 	"""
@@ -82,7 +91,6 @@ def chapter_7_5():
 	print(x)
 	spam(1)
 
-
 def chapter_7_6():
 	"""
 	7.6. Defining Anonymous or Inline Functions
@@ -96,7 +104,6 @@ def chapter_7_6():
 	names = ['David Beazley', 'Brian Jones', 'Raymond Hettinger', 'Ned Batchelder']
 	ordered_names = sorted(names, key=lambda name: name.split()[-1].lower())
 	print(ordered_names)
-
 
 def chapter_7_7():
 	"""
@@ -121,7 +128,6 @@ def chapter_7_7():
 	for f in funcs:
 		print(f(0))
 
-
 def chapter_7_8():
 	"""
 	???
@@ -135,6 +141,7 @@ def chapter_7_8():
 		print(a, b, c, d)
 
 	import functools
+
 	s1 = functools.partial(spam, 1)  # a = 1
 	s1(2, 3, 4)
 	s1(4, 5, 6)
@@ -144,7 +151,6 @@ def chapter_7_8():
 	s3 = functools.partial(spam, 1, 2, d=42)  # a = 1, b = 2, d = 42
 	s3(10)
 	s3(20)
-
 
 def chapter_7_9():
 	"""
@@ -157,14 +163,12 @@ def chapter_7_9():
 	"""
 	pass
 
-
 """
 A callback function is a function which is:
 	1. passed as an argument to another function, and,
 	2. is invoked after some kind of event.
 Once its parent function completes, the function passed as an argument is then called.
 """
-
 
 def chapter_7_10():
 	"""
@@ -209,6 +213,7 @@ def chapter_7_10():
 
 	def make_handler_coroutine():
 		import time
+
 		sequence = 0
 		while True:
 			result = yield
@@ -225,7 +230,6 @@ def chapter_7_10():
 	next(handler)
 	apply_async(add, (2, 3), callback=handler.send)
 	print('finished')
-
 
 def chapter_7_11():
 	"""
@@ -281,8 +285,6 @@ def chapter_7_11():
 
 	test()
 
-
-
 def chapter_7_12():
 	"""
 	???
@@ -322,7 +324,6 @@ def chapter_7_12():
 	f()
 	f()
 	f()
-
 
 def repeat():
 	n = 0
