@@ -5,10 +5,9 @@ Unpacking actually works with any object that happens to be iterable, not just t
 This includes strings, files, iterators, and generators.
 """
 a, b, c = (1, 2, 3)
-#print(a, b, c)
-#When unpacking, you may sometimes want to discard certain values. Pick a throwaway variable name for it
-_, shares, price, _ = [ 'ACME', 50, 91.1, (2012, 12, 21) ]
-
+# print(a, b, c)
+# When unpacking, you may sometimes want to discard certain values. Pick a throwaway variable name for it
+_, shares, price, _ = ['ACME', 50, 91.1, (2012, 12, 21)]
 
 """
 1.2. Unpacking Elements from Iterables of Arbitrary Length
@@ -19,9 +18,9 @@ Python “star expressions” can be used to address this problem.
 """
 user_record = ('Dave', 'dave@example.com', '773-555-1212', '847-555-1212')
 name, email, *phone_numbers = user_record
-#print(name, email, phone_numbers)
+# print(name, email, phone_numbers)
 *trailing, current0, current1 = [10, 8, 7, 1, 9, 5, 10, 3]
-#print(trailing, current0, current1)
+# print(trailing, current0, current1)
 
 line = 'nobody:*:-2:-2:Unprivileged User:/var/empty:/usr/bin/false'
 uname, *fields, homedir, sh = line.split(':')
@@ -36,24 +35,25 @@ the queue is full, the oldest item is automatically removed.
 deque.append() / deque.appendleft() / deque.pop() / deque.popleft()
 """
 from collections import deque
-q = deque(maxlen = 3)
+
+q = deque(maxlen=3)
 q.append(1)
 q.append(2)
 q.append(3)
-#print(q)
+# print(q)
 q.append(4)
-#print(q)
+# print(q)
 #
 q = deque()
 q.append(1)
 q.append(2)
 q.append(3)
-#print(q)
+# print(q)
 q.appendleft(4)
-#print(q)
+# print(q)
 q.pop()
 q.popleft()
-#print(q)
+# print(q)
 
 """
 1.4. Finding the Largest or Smallest N Items
@@ -64,9 +64,10 @@ heapq.min() / heapq.max()
 """
 
 import heapq
+
 nums = [1, 8, 2, 23, 7, -4, 18, 23, 42, 37, 2]
-#print(heapq.nlargest(3, nums)) # Prints [42, 37, 23]
-#print(heapq.nsmallest(3, nums)) # Prints [-4, 1, 2]
+# print(heapq.nlargest(3, nums)) # Prints [42, 37, 23]
+# print(heapq.nsmallest(3, nums)) # Prints [-4, 1, 2]
 
 portfolio = [
     {'name': 'IBM', 'shares': 100, 'price': 91.1},
@@ -78,29 +79,34 @@ portfolio = [
 ]
 cheap = heapq.nsmallest(3, portfolio, key=lambda s: s['price'])
 expensive = heapq.nlargest(3, portfolio, key=lambda s: s['price'])
-#print(cheap)
-#print(expensive)
+# print(cheap)
+# print(expensive)
 
 heap = [1, 8, 2, 23, 7, -4, 18, 23, 42, 37, 2]
 heapq.heapify(heap)
-#print(heap)
-#print(heapq.heappop(heap))
-#print(heapq.heappop(heap))
+# print(heap)
+# print(heapq.heappop(heap))
+# print(heapq.heappop(heap))
 
 """
 1.5. Implementing a Priority Queue
 利用tuple (priority, index, item) 实现堆中对各项的权值比较
 #python中没有现成的priority_queue !?
 """
+
+
 class PriorityQueue:
     def __init__(self):
         self._queue = []
         self._index = 0
+
     def push(self, item, priority):
         heapq.heappush(self._queue, (-priority, self._index, item))
         self._index += 1
+
     def pop(self):
         return heapq.heappop(self._queue)[-1]
+
 
 """
 1.6. Mapping Keys to Multiple Values in a Dictionary
@@ -133,7 +139,7 @@ d['a'].add(1)
 d['a'].add(1)
 d['a'].add(2)
 d['b'].add(2)
-#print(d)
+# print(d)
 
 
 """
@@ -142,12 +148,13 @@ d['b'].add(2)
 # OrderedDict exactly preserves the original insertion order of data when iterating.
 """
 from collections import OrderedDict
+
 d = OrderedDict()
 d['a'] = 1
 d['b'] = 2
 d['c'] = 3
 del d['c']
-#print(d)
+# print(d)
 
 """
 1.8. Calculating with Dictionaries
@@ -174,8 +181,8 @@ prices_sorted = sorted(zip(prices.values(), prices.keys()))
 #   求字典的交集与差集。注：values()不满足这类操作，因为其具有不唯一性，可以先用defaultdict(set)进行替换。
 dict.items() / dict.keys() / dict.values()
 """
-a = {'x' : 1, 'y' : 2, 'z' : 3}
-b = {'w' : 10, 'x' : 11, 'y' : 2}
+a = {'x': 1, 'y': 2, 'z': 3}
+b = {'w': 10, 'x': 11, 'y': 2}
 # Find keys in common
 print(a.keys() & b.keys())
 # Find keys in a that are not in b
@@ -189,23 +196,3 @@ print(a.items() & b.items())
 Eliminate the duplicate values in a sequence, but preserve the order of the
 remaining items.
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

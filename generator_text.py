@@ -6,6 +6,8 @@ def fibonacci():
         a, b = b, a + b
         yield b
 
+
 for num in fibonacci():
-    if num > 100: break
+    if num > 100:
+        break
     print(num)

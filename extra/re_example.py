@@ -1,19 +1,22 @@
 import re
 
+
 def split_test():
-	"""
-	re.split(pattern
-	"""
-	print(re.split(r'\W+', 'Words,words,words.'))
-	print(re.split(r'(\W+)', 'Words,words,words.'))
-	print(re.split(r'\W+', 'Words,words,words.', 1))
-	print(re.split(r'[a-f]+', '0a3B9', flags=re.IGNORECASE))
+    """
+    re.split(pattern
+    """
+    print(re.split(r'\W+', 'Words,words,words.'))
+    print(re.split(r'(\W+)', 'Words,words,words.'))
+    print(re.split(r'\W+', 'Words,words,words.', 1))
+    print(re.split(r'[a-f]+', '0a3B9', flags=re.IGNORECASE))
+
 
 def displaymatch(match):
-	if match is None:
-		print(None)
-	else:
-		print('<Match:%r, groups=%r>' % (match.group(), match.groups()))
+    if match is None:
+        print(None)
+    else:
+        print('<Match:%r, groups=%r>' % (match.group(), match.groups()))
+
 
 valid = re.compile(r'^[a2-9tjqk]{5}$')
 displaymatch(valid.match('akt5q'))
