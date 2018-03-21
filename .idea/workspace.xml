@@ -2,31 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51e59a38-055c-401f-b290-9d73f6d55bb2" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/chapter07/section_a.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/PythonCookbook.iml" afterPath="$PROJECT_DIR$/.idea/PythonCookbook.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/ChainMap_example.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/Counter.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/defaultdict_example.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/deque_example.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/itertools_example.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/collection_example/namedtuple_example.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/A350Purchase/__init__.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/A350Purchase/input" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/chapter01/__init__.py" afterPath="$PROJECT_DIR$/chapter01/__init__.py" />
       <change beforePath="$PROJECT_DIR$/chapter01/section_a.py" afterPath="$PROJECT_DIR$/chapter01/section_a.py" />
-      <change beforePath="$PROJECT_DIR$/chapter01/section_b.py" afterPath="$PROJECT_DIR$/chapter01/section_b.py" />
-      <change beforePath="$PROJECT_DIR$/chapter02/section_a.py" afterPath="$PROJECT_DIR$/chapter02/section_a.py" />
-      <change beforePath="$PROJECT_DIR$/chapter02/section_b.py" afterPath="$PROJECT_DIR$/chapter02/section_b.py" />
-      <change beforePath="$PROJECT_DIR$/chapter04/section_a.py" afterPath="$PROJECT_DIR$/chapter04/section_a.py" />
-      <change beforePath="$PROJECT_DIR$/chapter07/section_1.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/chapter08/__init__.py" afterPath="$PROJECT_DIR$/chapter08/__init__.py" />
-      <change beforePath="$PROJECT_DIR$/chapter08/section_1.py" afterPath="$PROJECT_DIR$/chapter08/section_1.py" />
-      <change beforePath="$PROJECT_DIR$/chapter09/section_1.py" afterPath="$PROJECT_DIR$/chapter09/section_1.py" />
-      <change beforePath="$PROJECT_DIR$/chapter09/section_2.py" afterPath="$PROJECT_DIR$/chapter09/section_2.py" />
-      <change beforePath="$PROJECT_DIR$/chpt10.py" afterPath="$PROJECT_DIR$/chpt10.py" />
-      <change beforePath="$PROJECT_DIR$/exchangePart/__init__.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/exchangePart/exp1.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/exchangePart/input" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/exchangePart/input2016" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/extra/re_example.py" afterPath="$PROJECT_DIR$/extra/re_example.py" />
-      <change beforePath="$PROJECT_DIR$/generator_text.py" afterPath="$PROJECT_DIR$/generator_text.py" />
-      <change beforePath="$PROJECT_DIR$/importprocess/__init__.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/chapter07/section_a.py" afterPath="$PROJECT_DIR$/chapter07/section_a.py" />
     </list>
     <ignored path="PythonCookbook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,34 +30,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="section_a.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/chapter04/section_a.py">
+      <file leaf-file-name="defaultdict_example.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/collection_example/defaultdict_example.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="124" column="0" lean-forward="false" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="section_1.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/chapter08/section_1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="619">
-              <caret line="311" column="53" lean-forward="false" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="53" />
-              <folding>
-                <element signature="e#16565#16880#0" expanded="false" />
-                <element signature="e#17007#17748#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="section_a.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/chapter07/section_a.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="18" column="27" lean-forward="true" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+            <state relative-caret-position="168">
+              <caret line="7" column="15" lean-forward="true" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -90,7 +52,11 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>*</find>
+      <find>its</find>
     </findStrings>
+    <replaceStrings>
+      <replace>itertools</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -127,16 +93,22 @@
         <option value="$PROJECT_DIR$/chapter04/section_a.py" />
         <option value="$PROJECT_DIR$/chapter08/section_1.py" />
         <option value="$PROJECT_DIR$/chapter08/__init__.py" />
-        <option value="$PROJECT_DIR$/chapter01/section_a.py" />
         <option value="$PROJECT_DIR$/chapter07/section_1.py" />
+        <option value="$PROJECT_DIR$/chapter07/section_a.py" />
+        <option value="$PROJECT_DIR$/chapter01/section_a.py" />
+        <option value="$PROJECT_DIR$/collection_example/deque_example.py" />
+        <option value="$PROJECT_DIR$/collection_example/itertools_example.py" />
+        <option value="$PROJECT_DIR$/collection_example/ChainMap_example.py" />
+        <option value="$PROJECT_DIR$/collection_example/Counter.py" />
+        <option value="$PROJECT_DIR$/collection_example/namedtuple.py" />
+        <option value="$PROJECT_DIR$/collection_example/defaultdict_example.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="107" />
-    <option name="y" value="2" />
-    <option name="width" value="1345" />
-    <option name="height" value="860" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -169,7 +141,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -187,11 +158,17 @@
               <item name="PythonCookbook" type="462c0819:PsiDirectoryNode" />
               <item name="chapter07" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="PythonCookbook" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonCookbook" type="462c0819:PsiDirectoryNode" />
+              <item name="collection_example" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -228,7 +205,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.itertools_example">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -260,6 +237,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="PythonCookbook" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="itertools_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="E:\applications\python35\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/collection_example" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="PythonCookbook" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/collection_example/itertools_example.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -370,9 +365,14 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Python.__init__" />
+      <item index="1" class="java.lang.String" itemvalue="Python.itertools_example" />
+    </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Python.__init__" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Python.itertools_example" />
+        <item index="1" class="java.lang.String" itemvalue="Python.__init__" />
       </list>
     </recent_temporary>
   </component>
@@ -403,25 +403,34 @@
       <configuration name="Unittest test1" configurationId="tests" />
     </history-entry>
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11913815" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24145299" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.59594595" sideWeight="0.50760454" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5319426" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.53186816" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17702703" sideWeight="0.49239543" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09010989" sideWeight="0.49239543" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.398017" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34530386" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -471,7 +480,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="10" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -519,19 +528,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/exchangePart/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/importprocess/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/exchangePart/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/chapter07/section_a.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/exchangePart/input1" />
-    <entry file="file://$PROJECT_DIR$/exchangePart/exp1.py" />
-    <entry file="file://$PROJECT_DIR$/exchangePart/input1" />
     <entry file="file://$PROJECT_DIR$/chapter03/section_b.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -717,7 +713,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chapter04/section_a.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="2976">
           <caret line="124" column="0" lean-forward="false" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
           <folding />
         </state>
@@ -727,24 +723,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1188">
           <caret line="60" column="29" lean-forward="false" selection-start-line="60" selection-start-column="29" selection-end-line="60" selection-end-column="29" />
-          <folding>
-            <element signature="e#1113#1656#1" expanded="false" />
-            <element signature="e#2352#2611#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/chapter01/section_a.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="284" column="52" lean-forward="false" selection-start-line="284" selection-start-column="52" selection-end-line="284" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/chapter08/section_1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
+        <state relative-caret-position="7464">
           <caret line="311" column="53" lean-forward="false" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="53" />
           <folding>
             <element signature="e#16565#16880#0" expanded="false" />
@@ -755,8 +739,76 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chapter07/section_a.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="18" column="27" lean-forward="true" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+        <state relative-caret-position="8904">
+          <caret line="371" column="55" lean-forward="false" selection-start-line="371" selection-start-column="55" selection-end-line="371" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter01/section_a.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="43" column="22" lean-forward="false" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/deque_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/itertools_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/ChainMap_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/Counter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="35" lean-forward="false" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/namedtuple_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collection_example/defaultdict_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="7" column="15" lean-forward="true" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
           <folding />
         </state>
       </provider>
