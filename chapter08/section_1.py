@@ -229,69 +229,96 @@ def chapter_8_6():
     to achieve the same thing using descriptors or closures.
     """
 
-    class Person:
-        """
-            In the class, there are three related methods, all of which must have the same name. The first method
-        is a getter function, and establishes first_name as being a property. The other two methods attach optional
-        setter and deleter functions to the first_name property. It’s important to stress that the @first_name.setter
-        and @first_name.deleter decorators won’t be defined unless first_name was already established as a property
-        using @property.
-
-            A critical feature of a property is that it looks like a normal attribute, but access automatically
-        triggers the getter, setter, and deleter methods.
-        """
-
-        def __init__(self, first_name):
+    def test1():
+        class Person:
             """
-                __init__() method sets self.first_name instead of self._first_name.
-                By setting self.first_name, the set operation uses the setter method (as opposed to bypassing it by
-            accessing self._first_name).
+                In the class, there are three related methods, all of which must have the same name. The first method
+            is a getter function, and establishes first_name as being a property. The other two methods attach optional
+            setter and deleter functions to the first_name property. It’s important to stress that the @first_name.setter
+            and @first_name.deleter decorators won’t be defined unless first_name was already established as a property
+            using @property.
+
+                A critical feature of a property is that it looks like a normal attribute, but access automatically
+            triggers the getter, setter, and deleter methods.
+
+            在为一个变量定义了@property之后，代码会自动调用对应的setter/getter函数，而不会去__dict__字典表中进行查找。
+            property(fget=None, fset=None, fdel=None, doc=None)
+            使用@property后，该变量名attr会被添加前置下划线更改为_attr
             """
-            self.first_name = first_name
 
-        @property
-        def first_name(self):
-            print("getter")
-            return self._first_name
+            def __init__(self, first_name):
+                """
+                    __init__() method sets self.first_name instead of self._first_name.
+                    By setting self.first_name, the set operation uses the setter method (as opposed to bypassing it by
+                accessing self._first_name).
+                """
+                self.first_name = first_name
 
-        @first_name.setter
-        def first_name(self, value):
-            print("setter")
-            if not isinstance(value, str):
-                raise TypeError("Expected a string")
-            self._first_name = value
+            @property
+            def first_name(self):
+                print("getter")
+                return self._first_name
 
-        @first_name.deleter
-        def first_name(self):
-            print("delete")
-            raise AttributeError("Can't delete attribute")
+            @first_name.setter
+            def first_name(self, value):
+                print("setter")
+                if not isinstance(value, str):
+                    raise TypeError("Expected a string")
+                self._first_name = value
 
-    a = Person('GUI')
-    print(a.first_name)
-    a.first_name = 10
-    del a.first_name
-    print(a.first_name)
+            @first_name.deleter
+            def first_name(self):
+                print("delete")
+                raise AttributeError("Can't delete attribute")
 
-    import math
+        a = Person('GUI')
+        print(a.first_name)
+        a.first_name = 10
+        del a.first_name
+        print(a.first_name)
+        print(a._first_name)
+        print(Person.__dict__)
 
-    class Circle:
-        """
-            Properties can also be a way to define computed attributes. These are attributes that are not actually
-        stored, but computed on demand.
-            The use of properties results in a very uniform instance interface in that radius, area, and perimeter
-        are all accessed as simple attributes, as opposed to a mix of simple attributes and method calls.
-        """
+    def test2():
+        import math
 
-        def __init__(self, radius):
-            self.radius = radius
+        class Circle:
+            """
+                Properties can also be a way to define computed attributes. These are attributes that are not actually
+            stored, but computed on demand.
+                The use of properties results in a very uniform instance interface in that radius, area, and perimeter
+            are all accessed as simple attributes, as opposed to a mix of simple attributes and method calls.
+            """
 
-        @property
-        def area(self):
-            return math.pi * self.radius ** 2
+            def __init__(self, radius):
+                self.radius = radius
 
-        @property
-        def perimeter(self):
-            return 2 * math.pi * self.radius
+            @property
+            def area(self):
+                return math.pi * self.radius ** 2
+
+            @property
+            def perimeter(self):
+                return 2 * math.pi * self.radius
+
+    def test3():
+        class Temperature:
+            def __init__(self, temperature=0):
+                self.temperature = temperature
+
+            def get_temperature(self):
+                print("get")
+                return self._temperature;
+
+            def set_temperature(self, value):
+                print("set")
+                self._temperature = value
+
+            temperature = property(get_temperature, set_temperature)
+
+        t = Temperature(10)
+        t.temperature = 100
+        print(t.temperature)
 
 
 def chapter_8_7():
