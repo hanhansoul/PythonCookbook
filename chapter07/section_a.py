@@ -285,55 +285,67 @@ def chapter_7_8():
             callback(result)
 
         apply_async(add, (2, 3), callback=print_result)
+        apply_async(add, ('hello', 'world'), callback=print_result)
 
-        # class
-        class ResultHandler:
-            def __init__(self):
-                self.sequence = 0
+        def test1():
+            # class
+            class ResultHandler:
+                def __init__(self):
+                    self.sequence = 0
 
-            def handler(self, result):
-                self.sequence += 1
-                print('[{}] Got: {}'.format(self.sequence, result))
+                def handler(self, result):
+                    self.sequence += 1
+                    print('[{}] Got: {}'.format(self.sequence, result))
 
-        r = ResultHandler()
-        apply_async(add, (2, 3), callback=r.handler)
+            r = ResultHandler()
+            apply_async(add, (2, 3), callback=r.handler)
+            apply_async(add, ('hello', 'world'), callback=r.handler)
 
-        # closure
-        def make_handler():
-            sequence = 0
+        def test2():
+            # closure
+            def make_handler():
+                sequence = 0
 
-            def handler(result):
-                nonlocal sequence
-                sequence += 1
+                def handler(result):
+                    nonlocal sequence
+                    sequence += 1
 
-            return handler
+                return handler
 
-        handler = make_handler()
-        apply_async(add, (2, 3), callback=handler)
+            h = make_handler()
+            apply_async(add, (2, 3), callback=h)
+            apply_async(add, ('hello', 'world'), callback=h)
 
-        # partial function
-        class SequenceNo:
-            def __init__(self):
-                self.sequence = 0
+        def test3():
+            # coroutine
+            def make_handler():
+                sequence = 0
+                while True:
+                    result = yield
+                    sequence += 1
+                    print('[{}] Got: {}'.format(sequence, result))
 
-        def handler(result, seq):
-            seq.sequnce += 1
-            print('[{}] Got: {}'.format(seq.sequence, result))
+            h = make_handler()
+            next(h)
+            apply_async(add, (2, 3), callback=h.send)
+            apply_async(add, ('hello', 'world'), callback=h.send)
 
-        seq = SequenceNo()
-        from functools import partial
-        apply_async(add, (2, 3), callback=partial(handler, seq=seq))
+        def test4():
+            # partial function
+            class SequenceNo:
+                def __init__(self):
+                    self.sequence = 0
 
-        def make_handler_coroutine():
-            sequence = 0
-            while True:
-                result = yield
-                sequence += 1
-                print('[{}] Got: {}'.format(sequence, result))
+            def handler(result, seq):
+                seq.sequnce += 1
+                print('[{}] Got: {}'.format(seq.sequence, result))
 
-        handler = make_handler_coroutine()
-        next(handler)
-        apply_async(add, (2, 3), callback=handler.send)
+            seq = SequenceNo()
+            from functools import partial
+            apply_async(add, (2, 3), callback=partial(handler, seq=seq))
+            apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
+
+
 
 
 

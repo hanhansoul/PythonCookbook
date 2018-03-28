@@ -379,8 +379,8 @@ def chapter_8_8():
     8.8. Extending a Property in a Subclass
         Within a subclass, you want to extend the functionality of a property defined in a parent class.
     """
-    def test1():
 
+    def test1():
         class Person:
             def __init__(self, name):
                 self.name = name

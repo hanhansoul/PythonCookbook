@@ -3,8 +3,7 @@ def section_1_1():
     1.1 Unpacking a Sequence into Separate Variables
     将tuple或sequence拆分成若干独立的变量
 
-    通过简单的赋值操作就可以实现。
-    任意可迭代对象都支持该操作。
+    通过简单的赋值操作就可以实现，任意可迭代对象都支持该操作，不限于tuple/list等。
 
     a, b, c ==> (a, b, c)
     """
@@ -18,6 +17,10 @@ def section_1_1():
         s = "Hello"
         a, b, c, d, e = s
         print(a, b, c, d, e)
+
+    def test3():
+        data = ['ACME', 50, 91.1, (2012, 12, 21)]
+        name, shares, price, (year, mon, day) = data
 
 
 def section_1_2():
@@ -68,6 +71,9 @@ def section_1_3():
     保留某次迭代过程的最近几条记录
 
     使用双端队列deque。当队列装满后，队尾新添加的元素将把最早添加的元素从队首删除。
+
+    在指定了deque的maxlen属性后，deque中最多保留maxlen个元素，多余元素将按照插入的顺序
+    被删除。
     """
 
     def test1():
@@ -96,7 +102,7 @@ def section_1_3():
 def section_1_4():
     """
     1.4. Finding the Largest or Smallest N Items
-    找到容器中最大和最小的若干项的list
+    返回容器中最大和最小的若干项的list
 
     使用heapq的nlargest()/nsmallest()函数。
     """
@@ -243,6 +249,16 @@ def section_1_9():
         print(a.keys() - b.keys())
         print(a.items() & b.items())
         print(a.items() | b.items())
+        print(set(a.values()) & set(b.values()))
+
+    def test1():
+        a = {
+            'x': 1,
+            'y': 2,
+            'z': 1
+        }
+        c = {key: a[key] for key in a.keys() - {'z', 'w'}}
+        print(c)
 
 
 def section_1_10():
