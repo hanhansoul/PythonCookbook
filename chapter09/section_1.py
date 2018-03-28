@@ -3,17 +3,21 @@ def chapter_9_1():
     """
     9.1. Putting a Wrapper Around a Function
     decorator
-    You want to put a wrapper layer around a function that adds extra processing (e.g., logging, timing, etc.).
-    @staticmethod @classmethod @property
+    You want to put a wrapper layer around a function that adds extra
+    processing (e.g., logging, timing, etc.).
+
+    @staticmethod
+    @classmethod
+    @property
 
     """
     import time
     from functools import wraps
 
     def timethis(func):
-        '''
+        """
         Decorator that reports the execution time.
-        '''
+        """
 
         @wraps(func)
         def wrapper(*args, **kwargs):

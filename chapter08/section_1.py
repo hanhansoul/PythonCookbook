@@ -270,6 +270,7 @@ def chapter_8_6():
     print(a.first_name)
     a.first_name = 10
     del a.first_name
+    print(a.first_name)
 
     import math
 
@@ -415,6 +416,10 @@ def chapter_8_8():
 
             @name.setter
             def name(self, value):
+                """
+                object.__set__(self, instance, value)
+                Called to set the attribute on an instance instance of the owner class to a new value.
+                """
                 print('Setting name to', value)
                 # print(super())
                 # print(super(Person, self))
@@ -425,12 +430,17 @@ def chapter_8_8():
             @name.deleter
             def name(self):
                 print('Deleting name')
+                # super(SubPerson, self).name.__delete__(self)
                 super(SubPerson, SubPerson).name.__delete__(self)
 
             def super_test(self):
+                """
+                super(cls, instance)返回cls父类的一个实例
+                super(cls, cls0)返回cls的父类
+                """
                 print(super())
-                print(super(SubPerson, self))
-                print(super(SubPerson, SubPerson))
+                print(super(SubPerson, self).name)  # 直接返回name的值
+                print(super(SubPerson, SubPerson).name)
 
         class SubPersonPart(Person):
             @Person.name.getter
