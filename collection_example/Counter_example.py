@@ -43,5 +43,5 @@ c = Counter(a=3, b=1)
 d = Counter(a=1, b=2)
 print(c + d)    # c[x] + d[x]
 print(c - d)    # c[x] - d[x]
-print(c & d)    # 交集 min(c[x], d[x])
-print(c | d)    # 并集 max(c[x], d[x])
+print(c & d)    # min(c[x], d[x])
+print(c | d)    # max(c[x], d[x])

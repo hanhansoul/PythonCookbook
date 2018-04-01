@@ -290,6 +290,41 @@ def chapter_8_14():
                 print('Len')
                 return len(self._items)
 
+    def test3():
+        import collections
+        import bisect
+        class A(collections.Iterable):
+            """
+            support iteration ----> implements __iter__()
+                The special feature about inheriting from collections.Iterable is that it ensures you implement all of
+            the required special methods.
+                Sequence / MutableSequence / Mapping / MutableMapping / Set / MutableSet
+            """
+            pass
+
+        class SortedItems(collections.Sequence):
+            def __init__(self, initial=None):
+                self._items = [] if initial is None else sorted(initial)
+
+            def __getitem__(self, index):
+                print(self._items)
+                return self._items[index]
+
+            def __len__(self):
+                return len(self._items)
+
+            def add(self, item):
+                bisect.insort(self._items, item)
+
+        items = SortedItems([5, 1, 3])
+        # print(list(items))
+        print(items[0])
+        print(items[-1])
+        items.add(2)
+        items.add(-10)
+        print(list(items))
+        print(items[1:4])
+
 
 def chapter_8_15():
     """
@@ -395,6 +430,77 @@ def chapter_8_15():
         # len(a)
         # print(a[0])
 
+        """
+            2. __setattr__()和__delattr__()需要对代理类和被代理的类中的属性进行进一步的区分和处理，一般而言，代理类只处理public属性；
+            3. __getattr__()对大多数__XXXX__()形式的方法不起作用。
+        """
+
+        class A:
+            def spam(self, x):
+                pass
+
+            def foo(self):
+                pass
+
+        class B:
+            def __init__(self):
+                self._a = A()
+
+            def spam(self, x):
+                return self._a.spam(x)
+
+            def foo(self):
+                return self._a.foo()
+
+            def bar(self):
+                pass
+
+        class NewB:
+            def __init__(self):
+                self._a = A()
+
+            def bar(self):
+                pass
+
+            def __getattr__(self, name):
+                return getattr(self._a, name)
+
+        # A proxy class that wraps around another object, but exposes its public attributes
+        class Proxy:
+            def __init__(self, obj):
+                self._obj = obj
+
+            def __getattr__(self, name):
+                print('getattr:', name)
+                return getattr(self._obj, name)
+
+            def __setattr__(self, name, value):
+                if name.startswith('_'):
+                    super().__setattr__(name, value)
+                else:
+                    print('setattr:', name, value)
+                    setattr(self._obj, name, value)
+
+            def __delattr__(self, name):
+                if name.startswith('_'):
+                    super().__delattr__(name)
+                else:
+                    print('delattr:', name)
+                    delattr(self._obj, name)
+
+        class Spam:
+            def __init__(self, x):
+                self.x = x
+
+            def bar(self, y):
+                print('Spam.bar:', self.x, y)
+
+        s = Spam(2)
+        p = Proxy(s)
+        print(p.x)
+        p.bar(3)
+        p.x = 37
+
 
 def chapter_8_16():
     """
@@ -433,31 +539,27 @@ def chapter_8_16():
         b = Date.today()
 
 
-def classmethod_and_staticmethod():
-    """
+    def classmethod_and_staticmethod():
+        class A:
+            x = 5
 
-    """
+            def __init__(self, x):
+                self.x = x
 
-    class A:
-        x = 5
+            @classmethod
+            def class_fun(cls, y):
+                return cls.x + y
 
-        def __init__(self, x):
-            self.x = x
+            @staticmethod
+            def static_fun():
+                print('call static fun.')
 
-        @classmethod
-        def class_fun(cls, y):
-            return cls.x + y
-
-        @staticmethod
-        def static_fun():
-            print('call static fun.')
-
-    a = A(10)
-    print(a.class_fun(30))
-    print(A.class_fun(20))
-    A.x = 100
-    print(A.class_fun(20))
-    A.static_fun()
+        a = A(10)
+        print(a.class_fun(30))
+        print(A.class_fun(20))
+        A.x = 100
+        print(A.class_fun(20))
+        A.static_fun()
 
 
 # __new__()

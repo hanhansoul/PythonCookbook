@@ -36,7 +36,10 @@ def section_4_2():
     """
     4.2. Delegating Iteration
     将一个包含list，tuple或其他可迭代对象的类作为一个自定义的迭代器。
-    只需要实现类的__iter__()方法，__iter__()方法返回当前对象的一个迭代器，iter(s)即调用的s.__iter__()。
+    只需要实现类的__iter__()方法，__iter__()方法返回当前对象的一个迭代器，iter(s)即调用的s。__iter__()。
+    next()调用__next__()
+    iter()调用__iter__()
+    len()调用__len__()
     """
 
     class Node:
@@ -68,6 +71,7 @@ def section_4_3():
     4.3. Creating New Iteration Patterns with Generators
     利用生成器创建新的迭代器模式。
     生成器只会在调用迭代器next()函数时才会继续运行，否则其会在yield位置阻塞直到下一次next()调用。
+    包含yield语句的函数即成为一个生成器，生成器只在迭代调用(next()函数调用)时才生效。
     """
 
     def test1():
@@ -79,6 +83,8 @@ def section_4_3():
 
         for n in frange(0, 4, 0.5):
             print(n)
+
+        print(list(frange(1, 5, 0.5)))
 
     def test2():
         def countdown(n):
@@ -98,9 +104,11 @@ def section_4_3():
 def section_4_4():
     """
     4.4. Implementing the Iterator Protocol
+    在python中，以生成器作为迭代器是最佳实践。
     // TO-DO
     实现python的迭代器接口需要实现__iter__()函数返回一个迭代器对象，该迭代器对象实现了__next__()函数，并以一个StopIteration异常
     作为结束标识。
+    python中迭代器要求实现__iter__()和__next__()函数，捕获StopIteration作为终止标识。
     这种实现迭代器的方式往往十分混乱，不利于阅读，因此推荐使用生成器的方式实现迭代功能。
     """
     pass
@@ -140,7 +148,7 @@ def section_4_6():
     """
     4.6. Defining Generator Functions with Extra State
     自定义生成器，使返回值返回多个状态。
-    利用tuple返回多个状态值。
+    利用类将生成器与额外状态封装在一起。
     """
     from collections import deque
 
@@ -234,6 +242,3 @@ def section_4_10():
     def test1():
         for index, value in enumerate(my_list):
             print(index, value)
-
-
-section_4_9()

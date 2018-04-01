@@ -96,7 +96,6 @@ def section_1_14():
 
     sorted()函数中的参数key可以指定对象中用于排序的属性
     attrgetter()函数
-    :return:
     """
 
     from operator import attrgetter
@@ -120,7 +119,6 @@ def section_1_15():
     根据序列元素中的某一个属性分组并进行遍历
 
     itertools.groupby()函数
-    :return:
     """
     from operator import itemgetter
     from itertools import groupby
@@ -207,6 +205,8 @@ def section_1_17():
     """
     1.17. Extracting a Subset of a Dictionary
     获取dict的子集
+
+    dict comprehension
     """
 
     def test1():
@@ -261,9 +261,9 @@ def section_1_19():
 def section_1_20():
     """
     1.20. Combining Multiple Mappings into a Single Mapping
+
     对多个dict执行并集操作，合成一个dict。
     ChainMap()函数中参数的顺序决定了出现重复键时候的对应值总是靠前的dict中的值。
-
     """
 
     def test1():

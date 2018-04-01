@@ -240,6 +240,10 @@ def chapter_8_6():
 
                 A critical feature of a property is that it looks like a normal attribute, but access automatically
             triggers the getter, setter, and deleter methods.
+
+            在为一个变量定义了@property之后，代码会自动调用对应的setter/getter函数，而不会去__dict__字典表中进行查找。
+            property(fget=None, fset=None, fdel=None, doc=None)
+            使用@property后，该变量名attr会被添加前置下划线更改为_attr
             """
 
             def __init__(self, first_name):
@@ -269,10 +273,11 @@ def chapter_8_6():
 
         a = Person('GUI')
         print(a.first_name)
-        print(a.first_name)
         a.first_name = 10
         del a.first_name
         print(a.first_name)
+        print(a._first_name)
+        print(Person.__dict__)
 
     def test2():
         import math
@@ -296,10 +301,24 @@ def chapter_8_6():
             def perimeter(self):
                 return 2 * math.pi * self.radius
 
-    test1()
+    def test3():
+        class Temperature:
+            def __init__(self, temperature=0):
+                self.temperature = temperature
 
+            def get_temperature(self):
+                print("get")
+                return self._temperature;
 
-# chapter_8_6()
+            def set_temperature(self, value):
+                print("set")
+                self._temperature = value
+
+            temperature = property(get_temperature, set_temperature)
+
+        t = Temperature(10)
+        t.temperature = 100
+        print(t.temperature)
 
 
 def chapter_8_7():
