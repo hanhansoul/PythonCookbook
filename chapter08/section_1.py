@@ -229,69 +229,77 @@ def chapter_8_6():
     to achieve the same thing using descriptors or closures.
     """
 
-    class Person:
-        """
-            In the class, there are three related methods, all of which must have the same name. The first method
-        is a getter function, and establishes first_name as being a property. The other two methods attach optional
-        setter and deleter functions to the first_name property. It’s important to stress that the @first_name.setter
-        and @first_name.deleter decorators won’t be defined unless first_name was already established as a property
-        using @property.
-
-            A critical feature of a property is that it looks like a normal attribute, but access automatically
-        triggers the getter, setter, and deleter methods.
-        """
-
-        def __init__(self, first_name):
+    def test1():
+        class Person:
             """
-                __init__() method sets self.first_name instead of self._first_name.
-                By setting self.first_name, the set operation uses the setter method (as opposed to bypassing it by
-            accessing self._first_name).
+                In the class, there are three related methods, all of which must have the same name. The first method
+            is a getter function, and establishes first_name as being a property. The other two methods attach optional
+            setter and deleter functions to the first_name property. It’s important to stress that the @first_name.setter
+            and @first_name.deleter decorators won’t be defined unless first_name was already established as a property
+            using @property.
+
+                A critical feature of a property is that it looks like a normal attribute, but access automatically
+            triggers the getter, setter, and deleter methods.
             """
-            self.first_name = first_name
 
-        @property
-        def first_name(self):
-            print("getter")
-            return self._first_name
+            def __init__(self, first_name):
+                """
+                    __init__() method sets self.first_name instead of self._first_name.
+                    By setting self.first_name, the set operation uses the setter method (as opposed to bypassing it by
+                accessing self._first_name).
+                """
+                self.first_name = first_name
 
-        @first_name.setter
-        def first_name(self, value):
-            print("setter")
-            if not isinstance(value, str):
-                raise TypeError("Expected a string")
-            self._first_name = value
+            @property
+            def first_name(self):
+                print("getter")
+                return self._first_name
 
-        @first_name.deleter
-        def first_name(self):
-            print("delete")
-            raise AttributeError("Can't delete attribute")
+            @first_name.setter
+            def first_name(self, value):
+                print("setter")
+                if not isinstance(value, str):
+                    raise TypeError("Expected a string")
+                self._first_name = value
 
-    a = Person('GUI')
-    print(a.first_name)
-    a.first_name = 10
-    del a.first_name
-    print(a.first_name)
+            @first_name.deleter
+            def first_name(self):
+                print("delete")
+                raise AttributeError("Can't delete attribute")
 
-    import math
+        a = Person('GUI')
+        print(a.first_name)
+        print(a.first_name)
+        a.first_name = 10
+        del a.first_name
+        print(a.first_name)
 
-    class Circle:
-        """
-            Properties can also be a way to define computed attributes. These are attributes that are not actually
-        stored, but computed on demand.
-            The use of properties results in a very uniform instance interface in that radius, area, and perimeter
-        are all accessed as simple attributes, as opposed to a mix of simple attributes and method calls.
-        """
+    def test2():
+        import math
 
-        def __init__(self, radius):
-            self.radius = radius
+        class Circle:
+            """
+                Properties can also be a way to define computed attributes. These are attributes that are not actually
+            stored, but computed on demand.
+                The use of properties results in a very uniform instance interface in that radius, area, and perimeter
+            are all accessed as simple attributes, as opposed to a mix of simple attributes and method calls.
+            """
 
-        @property
-        def area(self):
-            return math.pi * self.radius ** 2
+            def __init__(self, radius):
+                self.radius = radius
 
-        @property
-        def perimeter(self):
-            return 2 * math.pi * self.radius
+            @property
+            def area(self):
+                return math.pi * self.radius ** 2
+
+            @property
+            def perimeter(self):
+                return 2 * math.pi * self.radius
+
+    test1()
+
+
+# chapter_8_6()
 
 
 def chapter_8_7():
@@ -500,92 +508,143 @@ def chapter_8_9():
         使用descriptor和@property的取舍
         It should be stressed that you would probably not write a descriptor if you simply want to customize the
     access of a single attribute of a specific class. For that, it’s easier to use a property instead.
+
+    实现了__get__()，__set__()，__delete__()方法的类即descriptor。
+    __get__(self, instance, cls)
+    __set__(self, instance, value)
+    __delete__(self, instance)
     """
 
-    # Descriptor attribute for an integer type-checked attribute
-    class Integer:
-        """
-            A descriptor is a class that implements the three core attribute access operations (get, set, and delete)
-        in the form of __get__(), __set__(), and __delete__() special methods. These methods work by receiving an
-        instance as input. The underlying dictionary of the instance is then manipulated as appropriate.
-        """
-
-        def __init__(self, name):
-            self.name = name
-
-        def __get__(self, instance, cls):
-            if instance is None:
-                return self
-            else:
-                return instance.__dict__[self.name]
-
-        def __set__(self, instance, value):
-            if not isinstance(value, int):
-                raise TypeError('Expected an int')
-            instance.__dict__[self.name] = value
-
-        def __delete__(self, instance):
-            del instance.__dict__[self.name]
-
-    class Point:
-        x = Integer('x')
-        y = Integer('y')
-
-        def __init__(self, x, y):
-            # self.x = Integer('x') # No! Must be a class variable
-            # self.y = Integer('y')
-            self.x = x
-            self.y = y
-
-    p = Point(2, 3)
-    print(p.x)
-    print(p.y)
-    p.y = 5
-    p.x = 1.2
+    """
+    https://docs.python.org/3.5/howto/descriptor.html
+        如果类中同时定义了__get__()和__set__()方法，则这是一个数据描述器(data descriptor)。如果只定义了__get__()方法，则这是一个非数据
+    描述器(non-data descriptor)，主要用于方法调用。
+        如果实例的字典表__dict__中有数据描述器同名的项时，优先调用数据描述器。如果实例的字典表__dict__中有非数据描述器同名的项时，优先调用字典
+    表中的项。(LazyProperty的原理)
+        对于只读数据描述器，定义__get__()和__set__()方法，同时__set__()方法抛出一个异常。
+    
+        描述器可以直接通过方法名调用，如d.__set__(obj)。
+        但一般我们通过属性名直接访问描述器。例如，obj.d在obj的字典表中查找d，但如果d是一个描述器，其中定义了__get__()方法，则obj.d会优
+    先调用d.__get__(obj)。
+        注意，此处方法调用的细节取决于obj是一个对象还是一个类，访问是实例属性还是类属性。
+        对于对象实例属性，访问b.x时，最先调用的object.__getattribute__()方法将b.x转换为调用type(b).__dict__['x'].__get__(b, type(b))。
+    这使得数据描述器优先级优于实例变量，实例变量优先级优于非数据描述器，同时__getattr__()方法的优先级最低。
+        对于类属性，访问B.x时，最先调用的type.__getattribute__()方法将B.x转换为调用B.__dict__['x'].__get__(None, B)。python代码模
+    拟实现如下：
+    def __getattribute__(self, key):
+        "Emulate type_getattro() in Objects/typeobject.c"
+        v = object.__getattribute__(self, key)
+        if hasattr(v, '__get__'):
+           return v.__get__(None, self)
+        return v
+    
+        描述器由__getattribute__()方法触发，重写__getattribute__()将阻止自发的描述器访问。
+        object.__getattribute__()和type.__getattribute__()调用不同的__get__()方法，其调用参数不同。
+    数据描述器优先于实例的字典表，实例的字典表又优先于非数据描述器。
+    
+        对象调用super()返回的对象也提供一个用于调用描述器的__getattribute__()方法。super(B, obj).m()将找到B的父类A，并返回
+    A.__dict__['m'].__get__(obj, B)。
 
     """
-        Descriptors are often just one component of a larger programming framework involving decorators or metaclasses.
-    As such, their use may be hidden just barely out of sight. As an example, here is some more advanced
-    descriptor-based code involving a class decorator.
-    """
 
-    # Descriptor for a type-checked attribute
-    class Typed:
-        def __init__(self, name, expected_type):
-            self.name = name
-            self.expected_type = expected_type
+    def test1():
+        # Descriptor attribute for an integer type-checked attribute
+        class Integer:
+            """
+                A descriptor is a class that implements the three core attribute access operations (get, set, and delete)
+            in the form of __get__(), __set__(), and __delete__() special methods. These methods work by receiving an
+            instance as input. The underlying dictionary of the instance is then manipulated as appropriate.
+            """
 
-        def __get__(self, instance, cls):
-            if instance is None:
-                return self
-            else:
-                return instance.__dict__[self.name]
-
-        def __set__(self, instance, value):
-            if not isinstance(value, self.expected_type):
-                raise TypeError('Expected ' + str(self.expected_type))
-            instance.__dict__[self.name] = value
-
-        def __delete__(self, instance):
-            del instance.__dict__[self.name]
-
-        # Class decorator that applies it to selected attributes
-        def typeassert(**kwargs):
-            def decorate(cls):
-                for name, expected_type in kwargs.items():
-                    # Attach a Typed descriptor to the class
-                    setattr(cls, name, Typed(name, expected_type))
-                return cls
-
-            return decorate
-
-        # Example use
-        @typeassert(name=str, shares=int, price=float)
-        class Stock:
-            def __init__(self, name, shares, price):
+            def __init__(self, name):
                 self.name = name
-                self.shares = shares
-                self.price = price
+
+            def __get__(self, instance, cls):
+                print(instance, cls)
+                if instance is None:
+                    return self
+                else:
+                    return instance.__dict__[self.name]
+
+            def __set__(self, instance, value):
+                if not isinstance(value, int):
+                    raise TypeError('Expected an int')
+                instance.__dict__[self.name] = value
+
+            def __delete__(self, instance):
+                del instance.__dict__[self.name]
+
+        class Point:
+            x = Integer('x')
+            y = Integer('y')
+
+            def __init__(self, x, y):
+                # self.x = Integer('x') # No! Must be a class variable
+                # self.y = Integer('y')
+                self.x = x
+                self.y = y
+
+        p = Point(2, 3)
+        print(p.x)
+        print(p.y)
+        p.y = 5
+        p.x = 1.2
+
+        # 实例变量和类变量的区别
+        # 实例变量 取得属性的值
+        print(p.x)
+        # 等同于：
+        print(Point.x.__get__(p, Point))
+
+        # 类变量 取得属性的引用本身
+        print(Point.x)
+        # 等同于：
+        print(Point.x.__get__(None, Point))
+
+    def test2():
+        """
+            Descriptors are often just one component of a larger programming framework involving decorators or metaclasses.
+        As such, their use may be hidden just barely out of sight. As an example, here is some more advanced
+        descriptor-based code involving a class decorator.
+        """
+
+        # Descriptor for a type-checked attribute
+        class Typed:
+            def __init__(self, name, expected_type):
+                self.name = name
+                self.expected_type = expected_type
+
+            def __get__(self, instance, cls):
+                if instance is None:
+                    return self
+                else:
+                    return instance.__dict__[self.name]
+
+            def __set__(self, instance, value):
+                if not isinstance(value, self.expected_type):
+                    raise TypeError('Expected ' + str(self.expected_type))
+                instance.__dict__[self.name] = value
+
+            def __delete__(self, instance):
+                del instance.__dict__[self.name]
+
+            # Class decorator that applies it to selected attributes
+            def typeassert(**kwargs):
+                def decorate(cls):
+                    for name, expected_type in kwargs.items():
+                        # Attach a Typed descriptor to the class
+                        setattr(cls, name, Typed(name, expected_type))
+                    return cls
+
+                return decorate
+
+            # Example use
+            @typeassert(name=str, shares=int, price=float)
+            class Stock:
+                def __init__(self, name, shares, price):
+                    self.name = name
+                    self.shares = shares
+                    self.price = price
 
 
 # descriptor
@@ -596,43 +655,54 @@ def chapter_8_10():
         You’d like to define a read-only attribute as a property that only gets computed on access. However,
     once accessed, you’d like the value to be cached and not recomputed on each access.
         An efficient way to define a lazy attribute is through the use of a descriptor class
+
+        类装饰器
     """
 
-    class LazyProperty:
-        def __init__(self, func):
-            self.func = func
+    def test1():
+        class LazyProperty:
+            def __init__(self, func):
+                self.func = func
 
-        def __get__(self, instance, owner):
-            if instance is None:
-                return self
-            else:
-                print('__get__')
-                value = self.func(instance)
-                # setattr创建新的属性 self.func.__name__
-                setattr(instance, self.func.__name__, value)
-                return value
+            def __get__(self, instance, owner):
+                if instance is None:
+                    return self
+                else:
+                    print('__get__')
+                    value = self.func(instance)
+                    # setattr创建新的属性 self.func.__name__。
+                    # 当self.func.__name__存在时，在访问该属性时便不会调用__get__()方法。
+                    # instance即实例c，setattr为c新增了self.func.__name__属性，即area/perimeter属性，并赋值value。
+                    setattr(instance, self.func.__name__, value)
+                    return value
 
-    import math
-    class Circle:
-        def __init__(self, radius):
-            self.radius = radius
+        import math
 
-        @LazyProperty
-        def area(self):
-            print('Computing area')
-            return math.pi * self.radius ** 2
+        class Circle:
+            def __init__(self, radius):
+                self.radius = radius
 
-        @LazyProperty
-        def perimeter(self):
-            print('Computing perimeter')
-            return 2 * math.pi * self.radius
+            @LazyProperty
+            def area(self):
+                print('Computing area')
+                return math.pi * self.radius ** 2
 
-    c = Circle(4.0)
-    print(c.radius)
-    print(c.area)
-    print(c.area)
-    print(c.perimeter)
-    print(c.perimeter)
+            @LazyProperty
+            def perimeter(self):
+                print('Computing perimeter')
+                return 2 * math.pi * self.radius
+
+        c = Circle(4.0)
+        print(c.radius)
+        print(c.area)  # c.area会调用LazyProperty的__get__()方法
+        print(c.area)
+        print(c.perimeter)
+        print(c.perimeter)
+
+    # test1()
+
+
+# chapter_8_10()
 
 
 def chapter_8_11():
@@ -706,16 +776,54 @@ def chapter_8_12():
     appears immediately before the function definition.
     """
 
-    from abc import ABCMeta, abstractmethod
-    import io
+    def test1():
+        from abc import ABCMeta, abstractmethod
+        import io
 
-    class IStream(metaclass=ABCMeta):
-        @abstractmethod
-        def read(self, maxbytes=-1):
+        class IStream(metaclass=ABCMeta):
+            @abstractmethod
+            def read(self, maxbytes=-1):
+                pass
+
+            @abstractmethod
+            def write(self, data):
+                pass
+
+        IStream.register(io.IOBase)
+
+    def test2():
+        from abc import ABCMeta, abstractmethod
+        class A(metaclass=ABCMeta):
+            @property
+            @abstractmethod
+            def name(self):
+                pass
+
+            @name.setter
+            def name(self, value):
+                pass
+
+            @classmethod
+            @abstractmethod
+            def method1(cls):
+                pass
+
+            @staticmethod
+            @abstractmethod
+            def method1():
+                pass
+
+    def test3():
+        import collections
+        x = []
+        if isinstance(x, collections.Squence):
             pass
 
-        @abstractmethod
-        def write(self, data):
+        if isinstance(x, collections.Iterable):
             pass
 
-    IStream.register(io.IOBase)
+        if isinstance(x, collections.Sized):
+            pass
+
+        if isinstance(x, collections.Mapping):
+            pass

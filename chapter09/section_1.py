@@ -10,6 +10,7 @@ def chapter_9_1():
     @classmethod
     @property
 
+    @staticmethod / @classmethod 的区别
     """
     import time
     from functools import wraps
@@ -56,13 +57,16 @@ def chapter_9_2():
         @wraps
         You’ve written a decorator, but when you apply it to a function, important metadata such as the name, doc
     string, annotations, and calling signature are lost.
+
+    @wraps会将被包装函数的__name__，__doc__，__annotations__等属性传递返回的包装函数。
+    同时，被包装函数可以通过__wrapped__()直接调用。
     """
     pass
 
 
 def chapter_9_3():
     """
-    9.3. Unwrapping a Decorato
+    9.3. Unwrapping a Decorator
         A decorator has been applied to a function, but you want to “undo” it, gaining access to the original
     unwrapped function.
         Assuming that the decorator has been implemented properly using @wraps (see Recipe 9.2), you can usually
@@ -71,6 +75,8 @@ def chapter_9_3():
     the functools module or sets the __wrapped__ attribute directly. If multiple decorators have been applied to
     a function, the behavior of accessing __wrapped__ is currently undefined and should probably be avoided.
     In Python 3.3, it bypasses all of the layers. In Python3.5, NOT !!!
+
+    通过__wrapped__属性可以获取原始的被包装函数。
     """
     from functools import wraps
 
@@ -115,38 +121,67 @@ def chapter_9_4():
 
         func = decorator(x, y, z)(func)
         ====================
+
+        在包装函数的最外层再添加一层函数传入参数，在包装函数内可以直接调用这些参数。
     """
 
-    from functools import wraps
-    import logging
+    def test1():
+        from functools import wraps
+        import logging
 
-    def logged(level, name=None, message=None):
-        '''
-            Add logging to a function. level is the logging level, name is the logger name, and message is the log
-        message. If name and message aren't specified, they default to the function's module and name.
-        '''
+        def logged(level, name=None, message=None):
+            '''
+                Add logging to a function. level is the logging level, name is the logger name, and message is the log
+            message. If name and message aren't specified, they default to the function's module and name.
+            '''
 
-        def decorate(func):
-            logname = name if name else func.__module__
-            log = logging.getLogger(logname)
-            logmsg = message if message else func.__name__
+            def decorate(func):
+                logname = name if name else func.__module__
+                log = logging.getLogger(logname)
+                logmsg = message if message else func.__name__
 
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                log.log(level, logmsg)
-                return func(*args, **kwargs)
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    log.log(level, logmsg)
+                    return func(*args, **kwargs)
 
-            return wrapper
+                return wrapper
 
-        return decorate
+            return decorate
 
-    @logged(logging.DEBUG)
-    def add(x, y):
-        return x + y
+        @logged(logging.DEBUG)
+        def add(x, y):
+            return x + y
 
-    @logged(logging.CRITICAL, 'example')
-    def spam():
-        print('Spam!')
+        @logged(logging.CRITICAL, 'example')
+        def spam():
+            print('Spam!')
+
+    def test2():
+        from functools import wraps
+
+        def outter(x, y, z):
+            def decorator(func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    print(x, y, z, sep=" ")
+                    return func(*args, **kwargs)
+
+                return wrapper
+
+            return decorator
+
+        @outter(1, 2, 3)
+        def func(a, b):
+            print(a + b)
+
+        func(1, 2)
+
+        def func_no_decorator(a, b):
+            print(a + b)
+
+        f = outter(1, 2, 3)(func_no_decorator)
+        f(1, 2)
 
 
 def chapter_9_5():
@@ -156,7 +191,7 @@ def chapter_9_5():
         Return a new partial object which when called will behave like func called with the positional arguments
     args and keyword arguments keywords. If more arguments are supplied to the call, they are appended to args. If
     additional keyword arguments are supplied, they extend and override keywords.
-        典型的，函数在执行时，要带上所有必要的参数进行调用。然后，有时参数可以在函数被调用之前提前获知。这种情况下，一个函数有一
+        函数在执行时，要带上所有必要的参数进行调用。然后，有时参数可以在函数被调用之前提前获知。这种情况下，一个函数有一
     个或多个参数预先就能用上，以便函数能用更少的参数进行调用。
     ==================================
     import functools
@@ -176,54 +211,103 @@ def chapter_9_5():
         Using accessor functions that change internal variables through the use of nonlocal variable declarations, the
     accessor functions are then attached to the wrapper function as function attributes
     """
-    from functools import wraps, partial
-    import logging
 
-    def attach_wrapper(obj, func=None):
-        if func is None:
-            return partial(attach_wrapper, obj)
-        setattr(obj, func.__name__, func)
-        return func
+    def test1():
+        from functools import wraps, partial
+        import logging
 
-    def logged(level, name=None, message=None):
-        def decorate(func):
-            logname = name if name else func.__name__
-            log = logging.getLogger(logname)
-            logmsg = message if message else func.__name__
+        def attach_wrapper(obj, func=None):
+            if func is None:
+                return partial(attach_wrapper, obj)
+            setattr(obj, func.__name__, func)
+            return func
 
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                log.log(level, logmsg)
-                return func(*args, **kwargs)
+        def logged(level, name=None, message=None):
+            def decorate(func):
+                logname = name if name else func.__name__
+                log = logging.getLogger(logname)
+                logmsg = message if message else func.__name__
 
-            @attach_wrapper(wrapper)
-            def set_level(newlevel):
-                nonlocal level
-                level = newlevel
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    log.log(level, logmsg)
+                    return func(*args, **kwargs)
 
-            @attach_wrapper(wrapper)
-            def set_message(newmsg):
-                nonlocal logmsg
-                logmsg = newmsg
+                """
+                @attach_wrapper(wrapper)将set_level和set_message绑定为wrapper的属性
+                
+                attach_wrapper(wrapper, func=None)
+                ==> partial(attach_wrapper, wrapper)
+                ==> attach_wrapper(wrapper, func=set_level)
+                ==> setattr(wrapper, set_level.__name__, set_level)
+                ==> return set_level
 
-            return wrapper
+                set_level = attach_wrapper(wrapper, func=None)(wrapper, func=set_level)
+                
+                nonlocal / global
+                """
 
-        return decorate
+                @attach_wrapper(wrapper)
+                def set_level(newlevel):
+                    nonlocal level
+                    level = newlevel
 
-    @logged(logging.DEBUG)
-    def add(x, y):
-        print(x + y)
+                @attach_wrapper(wrapper)
+                def set_message(newmsg):
+                    nonlocal logmsg
+                    logmsg = newmsg
 
-    @logged(logging.CRITICAL, 'example')
-    def spam():
-        print('Spam!')
+                return wrapper
 
-    logging.basicConfig(level=logging.DEBUG)
-    add(2, 3)
-    add.set_message('Add called')
-    add(2, 3)
-    add.set_level(logging.WARNING)
-    add(2, 3)
+            return decorate
+
+        @logged(logging.DEBUG)
+        def add(x, y):
+            print(x + y)
+
+        @logged(logging.CRITICAL, 'example')
+        def spam():
+            print('Spam!')
+
+        logging.basicConfig(level=logging.DEBUG)
+        add(2, 3)
+        add.set_message('Add called')
+        add(2, 3)
+        add.set_level(logging.WARNING)
+        add(2, 3)
+
+    def test2():
+        pass
+
+    def test3():
+        from functools import partial
+
+        def attach_wrapper(obj, func=None):
+            if func is None:
+                return partial(attach_wrapper, obj)
+            setattr(obj, func.__name__, func)
+            return func
+
+        def wrapper():
+            print("wrapper")
+
+        @attach_wrapper(wrapper)
+        def ff():
+            print("ff")
+
+        a = 1
+
+        def g(obj1, obj2):
+            return obj1 + obj2
+
+        gg = partial(g, obj2=a)
+
+        gg(2)
+
+    test1()
+
+
+chapter_9_5()
 
 
 # functools.partial
