@@ -222,6 +222,12 @@ def chapter_9_5():
             setattr(obj, func.__name__, func)
             return func
 
+        # def attach_wrapper(obj):
+        #     def inner(func):
+        #         setattr(obj, func.__name__, func)
+        #         return func
+        #     return inner
+
         def logged(level, name=None, message=None):
             def decorate(func):
                 logname = name if name else func.__name__
@@ -307,9 +313,6 @@ def chapter_9_5():
     test1()
 
 
-chapter_9_5()
-
-
 # functools.partial
 def chapter_9_6():
     """
@@ -318,6 +321,8 @@ def chapter_9_6():
         You would like to write a single decorator that can be used without arguments, such as @decorator, or with
     optional arguments, such as @decorator(x,y,z). However, there seems to be no straightforward way to do it due
     to differences in calling conventions between simple decorators and decorators taking arguments
+
+    为装饰器参数指定默认值。
 
     ====================
     @logged(level=logging.CRITICAL, name='example')
@@ -330,32 +335,72 @@ def chapter_9_6():
     ====================
     """
 
-    from functools import wraps, partial
-    import logging
+    def test1():
+        from functools import wraps, partial
+        import logging
 
-    def logged(func=None, level=logging.DEBUG, name=None, message=None):
-        if func is None:
-            return partial(logged, level=level, name=name, message=message)
-        # 利用partial函数，将传入装饰器中的参数进行初始化后返回同一个装饰器函数，新的装饰器函数将接受被装饰函数作为第一个参数。
+        def logged(func=None, level=logging.DEBUG, name=None, message=None):
+            if func is None:
+                return partial(logged, level=level, name=name, message=message)
+            # 利用partial函数，将传入装饰器中的参数进行初始化后返回同一个装饰器函数，新的装饰器函数将接受被装饰函数作为第一个参数。
 
-        logname = name if name else func.__module__
-        log = logging.getLogger(logname)
-        logmsg = message if message else func.__name__
+            logname = name if name else func.__module__
+            log = logging.getLogger(logname)
+            logmsg = message if message else func.__name__
 
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            log.log(level, logmsg)
-            return func(*args, **kwargs)
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                log.log(level, logmsg)
+                return func(*args, **kwargs)
 
-        return wrapper
+            return wrapper
 
-    @logged
-    def add(x, y):
-        return x + y
+        @logged
+        def add(x, y):
+            return x + y
 
-    @logged(level=logging.CRITICAL, name='example')
-    def spam():
-        print('Spam!')
+        @logged(level=logging.CRITICAL, name='example')
+        def spam():
+            print('Spam!')
+
+    def test2():
+        import functools
+
+        def decorator(func=None, *, a=1, b=2, c=3):
+            if func is None:
+                return functools.partial(decorator, a=a, b=b, c=c)
+
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                print("decorator", a, b, c)
+                return func(*args, **kwargs)
+
+            return wrapper
+
+        @decorator
+        def f1(a, b):
+            return a + b
+
+        @decorator(a=10, c=30)
+        def f2(a, b):
+            return a + b
+
+    def test3():
+        def decorator(a=10, b=20, c=30):
+            def inner(func):
+                def wrapper(*args, **kwargs):
+                    print("decorator", a, b, c)
+                    return func(*args, **kwargs)
+
+                return wrapper
+
+            return inner
+
+        @decorator()
+        def add(a, b):
+            return a + b
+
+        print(add(1, 2))
 
 
 def chapter_9_7():
@@ -364,29 +409,50 @@ def chapter_9_7():
     9.7. Enforcing Type Checking on a Function Using a Decorator
         function signature object
         one aspect of decorators is that they only get applied once, at the time of function definition.
+
+        inspect.signature()方法
+
     """
     from inspect import signature
     from functools import wraps
 
-    def typeassert(*ty_args, **ty_kwargs):
-        def decorate(func):
-            if not __debug__:
-                return func
-            sig = signature(func)
-            bound_types = sig.bind_partial(*ty_args, **ty_kwargs).arguments
+    def test1():
+        def typeassert(*ty_args, **ty_kwargs):
+            def decorate(func):
+                if not __debug__:
+                    return func
+                sig = signature(func)
+                bound_types = sig.bind_partial(*ty_args, **ty_kwargs).arguments
 
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                bound_values = sig.bind(*args, **kwargs)
-                for name, value in bound_values.arguments.items():
-                    if name in bound_types:
-                        if not isinstance(value, bound_types[name]):
-                            raise TypeError('Argument {} must be {}'.format(name, bound_types[name]))
-                return func(*args, **kwargs)
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    bound_values = sig.bind(*args, **kwargs)
+                    for name, value in bound_values.arguments.items():
+                        if name in bound_types:
+                            if not isinstance(value, bound_types[name]):
+                                raise TypeError('Argument {} must be {}'.format(name, bound_types[name]))
+                    return func(*args, **kwargs)
 
-            return wrapper
+                return wrapper
 
-        return decorate
+            return decorate
+
+    def test2():
+        def spam(x, y, z=42):
+            pass
+
+        sig = signature(spam)
+        print(sig)
+        print(sig.parameters['z'].name)
+        print(sig.parameters['z'].default)
+        print(sig.parameters['z'].kind)
+
+        bound_types = sig.bind_partial(int, z=int)
+        print(bound_types)
+        print(bound_types.arguments)
+
+        bound_types = sig.bind(1, 2, 3)
+        print(bound_types.arguments)
 
 
 def chapter_9_8():
@@ -399,26 +465,43 @@ def chapter_9_8():
     manipulating state on the associated property instance. So, if you ever had a problem
     where decorators needed to record or combine information behind the scenes, it’s a
     sensible approach.
+
+    类中定义的装饰器分为类实例装饰器和类装饰器。
+    @property本质上就是一个包含getter()/setter()/deleter()方法的类，每一个方法都是一个装饰器。
+    在类中定义装饰器主要用于记录和组合应用场景的全局信息。
+
     """
-    from functools import wraps
 
-    class A:
-        def decorator_asinstance(self, func):
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                print('Decorator as instance')
-                return func(*args, **kwargs)
+    def test1():
+        from functools import wraps
 
-            return wrapper
+        class A:
+            def decorator_as_instance(self, func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    print('Decorator as instance')
+                    return func(*args, **kwargs)
 
-        @classmethod
-        def decorator_asclassmethod(cls, func):
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                print('Decorator as classmethod')
-                return func(*args, **kwargs)
+                return wrapper
 
-            return wrapper
+            @classmethod
+            def decorator_as_classmethod(cls, func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    print('Decorator as classmethod')
+                    return func(*args, **kwargs)
+
+                return wrapper
+
+        a = A()
+
+        @a.decorator_as_instance
+        def spam():
+            pass
+
+        @A.decorator_as_classmethod
+        def grok():
+            pass
 
 
 def chapter_9_9():
@@ -431,6 +514,8 @@ def chapter_9_9():
     the method). If the method is accessed on a class, the instance argument to __get__() is set to None and the
     Profiled instance itself is just returned.
 
+        将类定义为装饰器，将类的实例作为装饰器，需要实现__call__()/__get__()方法。
+
         python中创建一个实例的方法有三种方式:
         1. 直接在类中定义方法。
         2. 将一个函数赋值给类的属性。
@@ -439,43 +524,69 @@ def chapter_9_9():
     import types
     from functools import wraps
 
-    class Profiled:
-        def __init__(self, func):
-            wraps(func)(self)  # partial()
-            self.ncalls = 0
+    def test1():
+        class Profiled:
+            def __init__(self, func):
+                wraps(func)(self)  # partial()
+                self.ncalls = 0
 
-        def __call__(self, *args, **kwargs):
-            self.ncalls += 1
-            return self.__wrapped__(*args, **kwargs)
+            def __call__(self, *args, **kwargs):
+                self.ncalls += 1
+                return self.__wrapped__(*args, **kwargs)
 
-        def __get__(self, instance, cls):
-            if instance is None:
-                return self
-            else:
-                return types.MethodType(self, instance)
+            def __get__(self, instance, cls):
+                if instance is None:
+                    return self
+                else:
+                    return types.MethodType(self, instance)
 
-    @Profiled
-    def add(x, y):
-        return x + y
-
-    class Spam:
         @Profiled
-        def bar(self, x):
-            print(self, x)
+        def add(x, y):
+            return x + y
 
-    print(add(2, 3))
-    print(add(4, 5))
-    print(add.ncalls)
-    s = Spam()
-    s.bar(1)
-    s.bar(2)
-    s.bar(3)
-    s = Spam()
+        class Spam:
+            @Profiled
+            def bar(self, x):
+                print(self, x)
 
-    def grok(self, x):
-        pass
+        print(add(2, 3))
+        print(add(4, 5))
+        print(add.ncalls)
+        s = Spam()
+        s.bar(1)
+        s.bar(2)
+        s.bar(3)
+        s = Spam()
 
-    print(grok.__get__(s, Spam))
+        def grok(self, x):
+            pass
+
+        print(grok.__get__(s, Spam))
+
+    def test2():
+        def Profiled(func):
+            ncalls = 0
+
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                nonlocal ncalls
+                ncalls += 1
+                return func(*args, **kwargs)
+
+            wrapper.ncalls = lambda: ncalls
+            return wrapper
+
+        @Profiled
+        def add(x, y):
+            return x + y
+
+    def test3():
+        class C:
+            def __call__(self, a, b):
+                print(a, b)
+
+        c = C()
+        c(1, 2)
 
 
 def chapter_9_10():
