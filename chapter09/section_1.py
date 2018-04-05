@@ -527,7 +527,7 @@ def chapter_9_9():
     def test1():
         class Profiled:
             def __init__(self, func):
-                wraps(func)(self)  # partial()
+                wraps(func)(self)
                 self.ncalls = 0
 
             def __call__(self, *args, **kwargs):
@@ -535,19 +535,29 @@ def chapter_9_9():
                 return self.__wrapped__(*args, **kwargs)
 
             def __get__(self, instance, cls):
+                # print("__get__ ", self)
                 if instance is None:
+                    print("return self")
                     return self
                 else:
+                    print("return methodtype")
                     return types.MethodType(self, instance)
 
-        @Profiled
+        # @Profiled
+        # def add(x, y):
+        #     return x + y
+
         def add(x, y):
             return x + y
+
+        add = Profiled(add)
 
         class Spam:
             @Profiled
             def bar(self, x):
                 print(self, x)
+
+            # bar = Profiled(bar)
 
         print(add(2, 3))
         print(add(4, 5))
@@ -556,7 +566,7 @@ def chapter_9_9():
         s.bar(1)
         s.bar(2)
         s.bar(3)
-        s = Spam()
+        print(s.bar.ncalls)
 
         def grok(self, x):
             pass
@@ -588,6 +598,11 @@ def chapter_9_9():
         c = C()
         c(1, 2)
 
+    def test4():
+        class Foo:
+            def foo(self):
+                print("call foo")
+
 
 def chapter_9_10():
     """
@@ -598,6 +613,8 @@ def chapter_9_10():
         If you get the order of decorators wrong, you’ll get an error. The problem here is that @classmethod and
     @staticmethod don’t actually create objects that are directly callable. Instead, they create special descriptor
     objects, as described in Recipe 8.9.
+
+    注意装饰器的位置要放在@classmethod / @staticmethod之前。
     """
     import time
     from functools import wraps
@@ -652,31 +669,51 @@ def chapter_9_11():
     from functools import wraps
     import inspect
 
-    def optional_debug(func):
-        # 处理keyword-only和kwargs参数key值重复的问题
-        if 'debug' in inspect.getargspec(func).args:
-            raise TypeError('debug argument already defined')
+    def test1():
+        def optional_debug(func):
+            @wraps(func)
+            def wrapper(*args, debug=False, **kwargs):
+                if debug:
+                    print("Calling", func.__name__)
+                return func(*args, **kwargs)
 
-        @wraps(func)
-        def wrapper(*args, debug=False, **kwargs):
-            if debug:
-                print('Calling', func.__name__)
-            return func(*args, **kwargs)
+            return wrapper
 
-        # signature ???
-        sig = inspect.signature(func)
-        parms = list(sig.parameters.values())
-        parms.append(inspect.Parameter('debug', inspect.Parameter.KEYWORD_ONLY, default=False))
-        wrapper.__signature__ = sig.replace(parameters=parms)
+        @optional_debug
+        def spam(a, b, c):
+            print(a, b, c)
 
-        return wrapper
+        spam(1, 2, 3)
 
-    @optional_debug
-    def spam(a, b, c):
-        print(a, b, c)
+        spam(1, 2, 3, debug=True)
 
-    spam(1, 2, 3)
-    spam(1, 2, 3, debug=True)
+    def test2():
+
+        def optional_debug(func):
+            # 处理keyword-only和kwargs参数key值重复的问题
+            if 'debug' in inspect.getargspec(func).args:
+                raise TypeError('debug argument already defined')
+
+            @wraps(func)
+            def wrapper(*args, debug=False, **kwargs):
+                if debug:
+                    print('Calling', func.__name__)
+                return func(*args, **kwargs)
+
+            # signature ???
+            sig = inspect.signature(func)
+            parms = list(sig.parameters.values())
+            parms.append(inspect.Parameter('debug', inspect.Parameter.KEYWORD_ONLY, default=False))
+            wrapper.__signature__ = sig.replace(parameters=parms)
+
+            return wrapper
+
+        @optional_debug
+        def spam(a, b, c):
+            print(a, b, c)
+
+        spam(1, 2, 3)
+        spam(1, 2, 3, debug=True)
 
 
 def chapter_9_12():
@@ -684,5 +721,31 @@ def chapter_9_12():
     9.12. Using Decorators to Patch Class Definitions
         You want to inspect or rewrite portions of a class definition to alter its behavior, but without using
     inheritance or metaclasses.
+
+    使用装饰器作为mixins或metaclass
     """
-    pass
+
+    def test1():
+        def log_getattribute(cls):
+            orig_getattribute = cls.__getattribute__
+
+            def new_getattribute__(self, name):
+                print("getting:", name)
+                return orig_getattribute(self, name)
+
+            cls.__getattribute__ = new_getattribute__
+            return cls
+
+        @log_getattribute
+        class A:
+            def __init__(self, x):
+                self.x = x
+
+            def spam(self):
+                pass
+
+        a = A(42)
+        print(a.x)
+        a.spam()
+
+    test1()

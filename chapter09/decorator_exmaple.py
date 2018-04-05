@@ -1,11 +1,18 @@
 def test1():
     def outer(func):
-        def inner():
+        def inner(*args, **kwargs):
             print("before func")
-            ret = func()
-            return ret + 1
+            return func(*args, **kwargs)
 
         return inner
+
+    class C:
+        @outer
+        def fun(self, a, b):
+            print(a + b)
+
+    c = C()
+    c.fun(1, 2)
 
     @outer
     def foo():
@@ -55,7 +62,6 @@ def test2():
 def test3():
     """
     使用functools.partial()方法为装饰器添加参数。
-    :return:
     """
     import functools
 
