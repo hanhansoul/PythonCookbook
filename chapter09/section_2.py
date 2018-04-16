@@ -1,4 +1,4 @@
-exec_chpt = 0
+# metaclass
 
 
 def chapter_9_13():
@@ -7,13 +7,16 @@ def chapter_9_13():
         You want to change the way in which instances are created in order to implement singletons,
     caching, or other similar features.
 
+    metaclass
     修改实例创建的方式，以实现单例模式，缓存或其他模式。
     创建一个metaclass并重新实现__call__()方法。
     """
+
     def test1():
         """
         无人可以创建类的实例
         """
+
         class NoInstance(type):
             def __call__(self, *args, **kwargs):
                 raise TypeError("Can't instantiate directly")
@@ -31,6 +34,7 @@ def chapter_9_13():
         """
         单例模式
         """
+
         # Singleton
         class Singleton(type):
             def __init__(self, *args, **kwargs):
@@ -85,11 +89,13 @@ def chapter_9_13():
         """
         不使用metaclass实现单例模式
         """
+
         class _Spam:
             def __init__(self):
                 print("Creating Spam")
 
         _spam_instance = None
+
         def Spam():
             global _spam_instance
             if _spam_instance is not None:
@@ -98,6 +104,63 @@ def chapter_9_13():
                 _spam_instance = _Spam()
                 return _spam_instance
 
+    # TODO metaclass详解 test5()/test6()
+    # https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python
+
+    def test5():
+        """
+        metaclass
+        """
+
+        # the metaclass will automatically get passed the same argument
+        # that you usually pass to `type`
+        def upper_attr(future_class_name, future_class_parents, future_class_attr):
+            """
+              Return a class object, with the list of its attribute turned
+              into uppercase.
+            """
+            # pick up any attribute that doesn't start with '__' and uppercase it
+            uppercase_attr = {}
+            for name, val in future_class_attr.items():
+                if not name.startswith('__'):
+                    uppercase_attr[name.upper()] = val
+                else:
+                    uppercase_attr[name] = val
+
+            # let `type` do the class creation
+            return type(future_class_name, future_class_parents, uppercase_attr)
+
+        class Foo(metaclass=upper_attr):  # global __metaclass__ won't work with "object" though
+            # but we can define __metaclass__ here instead to affect only this class
+            # and this will work with "object" children
+            bar = 'bip'
+
+        print(hasattr(Foo, 'bar'))
+        # Out: False
+        print(hasattr(Foo, 'BAR'))
+        # Out: True
+
+        f = Foo()
+        print(f.BAR)
+        # Out: 'bip'
+
+    def test6():
+        class UpperAttrMetaClass(type):
+            def __new__(cls, clsname, bases, d):
+                uppercase_attr = dict((name.upper(), val) for name, val in d.items() if not name.startswith('__'))
+                # return super(UpperAttrMetaClass, cls).__new__(cls, clsname, bases, uppercase_attr)
+                return super().__new__(cls, clsname, bases, uppercase_attr)
+
+        class Foo(metaclass=UpperAttrMetaClass):
+            bar = 'bip'
+
+        print(hasattr(Foo, 'bar'))
+        print(hasattr(Foo, 'BAR'))
+
+        f = Foo()
+        # print(f.BAR)
+
+
 def chapter_9_14():
     """
     9.14. Capturing Class Attribute Definition Order
@@ -105,8 +168,11 @@ def chapter_9_14():
         You want to automatically record the order in which attributes and methods are defined
     inside a class body so that you can use it in various operations (e.g., serializing, mapping
     to databases, etc.).
+
+    __prepare__()方法会在类定义开始时被调用，类名和其基类会被传递给该方法。该方法会返回一个map对象作为类的命名空间__dict__。
     """
     from collections import OrderedDict
+
     class Typed:
         _expected_type = type(None)
 
@@ -127,9 +193,10 @@ def chapter_9_14():
     class String(Typed):
         _expected_type = str
 
-    class orderedMeta(type):
+    class OrderedMeta(type):
         def __new__(cls, clsname, bases, clsdict):
-            d = dict(clsdict)
+            # d = dict(clsdict)
+            d = clsdict
             order = []
             for name, value in clsdict.items():
                 if isinstance(value, Typed):
@@ -142,7 +209,26 @@ def chapter_9_14():
         def __prepare__(cls, clsname, bases):
             return OrderedDict()
 
+    class Structure(metaclass=OrderedMeta):
+        def as_csv(self):
+            return ','.join(str(getattr(self.name)) for name in self._order)
 
-exec_chpt = chapter_9_14
+    class Stock(Structure):
+        name = String()
+        shares = Integer()
+        price = Float()
 
-exec_chpt()
+        def __init__(self, name, shares, price):
+            self.name = name
+            self.shares = shares
+            self.price = price
+
+    s = Stock('G00G', 100, 490.1)
+    print(s.name)
+    print(s.as_csv())
+
+
+def chapter_9_15():
+    """
+    为metaclass类提供可选的参数。
+    """

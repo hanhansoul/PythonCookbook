@@ -209,11 +209,13 @@ types.MethodType()
     s.bar(1)    # type(s).__dict__['bar'].__get__(s, type(s))
     
 
-## 使用装饰器装饰类方法或静态方法
+## 使用装饰器装饰类方法或静态方法(chapter 9.10)
 
 与其他类型装饰器使用方法一样，但需要保证装饰器出现在@classmethod或@staticmethod之前。
 
 ## 装饰器应用
 
 ### 方法参数的类型安全
+
+### 利用装饰器为方法的参数列表添加新的参数(chapter 9.11)
 
