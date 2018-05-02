@@ -42,21 +42,21 @@ def section_4_2():
     len()调用__len__()
     """
 
-    class Node:
-        def __init__(self, value):
-            self._value = value
-            self._children = []
-
-        def __repr__(self):
-            return 'Node({!r})'.format(self._value)
-
-        def add_child(self, node):
-            self._children.append(node)
-
-        def __iter__(self):
-            return iter(self._children)
-
     def test1():
+        class Node:
+            def __init__(self, value):
+                self._value = value
+                self._children = []
+
+            def __repr__(self):
+                return 'Node({!r})'.format(self._value)
+
+            def add_child(self, node):
+                self._children.append(node)
+
+            def __iter__(self):
+                return iter(self._children)
+
         root = Node(0)
         child1 = Node(1)
         child2 = Node(2)
@@ -65,6 +65,44 @@ def section_4_2():
         for ch in root:
             print(ch)
 
+    def test2():
+        class C:
+            def __init__(self):
+                self._items = []
+                self._it = iter(self._items)
+
+            def push(self, value):
+                self._items.append(value)
+
+            def __iter__(self):
+                return iter(self._items)
+
+            def __next__(self):
+                return next(self._it)
+
+        c = C()
+        for i in range(10):
+            c.push(i)
+        print(next(c))
+        print(next(c))
+        # for v in c:
+        #     print(v)
+
+    def test3():
+        class Fib(object):
+            def __init__(self):
+                self.a = 0
+                self.b = 1
+
+            def __next__(self):
+                self.a, self.b = self.b, self.a + self.b
+                return self.a
+
+            def __iter__(self):
+                return self
+
+        for v in Fib():
+            pass
 
 def section_4_3():
     """
@@ -105,7 +143,7 @@ def section_4_4():
     """
     4.4. Implementing the Iterator Protocol
     在python中，以生成器作为迭代器是最佳实践。
-    // TO-DO
+    // TODO
     实现python的迭代器接口需要实现__iter__()函数返回一个迭代器对象，该迭代器对象实现了__next__()函数，并以一个StopIteration异常
     作为结束标识。
     python中迭代器要求实现__iter__()和__next__()函数，捕获StopIteration作为终止标识。

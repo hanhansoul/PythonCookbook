@@ -130,7 +130,7 @@ def section_2_18():
     pass
 
 
-def sectoin_2_19():
+def section_2_19():
     pass
 
 

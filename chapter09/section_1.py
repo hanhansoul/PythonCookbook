@@ -122,6 +122,7 @@ def chapter_9_4():
         func = decorator(x, y, z)(func)
         ====================
 
+        为装饰器提供参数。
         在包装函数的最外层再添加一层函数传入参数，在包装函数内可以直接调用这些参数。
     """
 
@@ -210,6 +211,9 @@ def chapter_9_5():
     used to control the behavior of the decorator at runtime.
         Using accessor functions that change internal variables through the use of nonlocal variable declarations, the
     accessor functions are then attached to the wrapper function as function attributes
+
+        为函数绑定用于修改装饰器中变量的函数，以便在运行过程中动态地对装饰器中的变量进行修改。
+        attach_wrapper装饰器实现了
     """
 
     def test1():
@@ -748,4 +752,3 @@ def chapter_9_12():
         print(a.x)
         a.spam()
 
-    test1()

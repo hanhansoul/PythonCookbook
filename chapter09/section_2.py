@@ -1,6 +1,4 @@
 # metaclass
-
-
 def chapter_9_13():
     """
     9.13. Using a Metaclass to Control Instance Creation
@@ -116,8 +114,8 @@ def chapter_9_13():
         # that you usually pass to `type`
         def upper_attr(future_class_name, future_class_parents, future_class_attr):
             """
-              Return a class object, with the list of its attribute turned
-              into uppercase.
+            Return a class object, with the list of its attribute turned
+            into uppercase.
             """
             # pick up any attribute that doesn't start with '__' and uppercase it
             uppercase_attr = {}
@@ -232,3 +230,69 @@ def chapter_9_15():
     """
     为metaclass类提供可选的参数。
     """
+
+
+def chapter_9_20():
+    # TODO
+    """
+    根据函数注解，利用metaclass和descriptor实现基于参数类型的函数重载功能。
+    """
+
+    def test1():
+        class Spam:
+            def bar(self, x: int, y: int):
+                print('Bar 1:', x, y)
+
+            def bar(self, s: str, n: int = 0):
+                print('Bar 2:', s, n)
+
+        s = Spam()
+        s.bar(2, 3)
+        s.bar('hello')
+
+    def test2():
+        import inspect
+        import types
+
+        class MultiMethod:
+            def __init__(self, name):
+                self._methods = {}
+                self.__name__ = name
+
+            def register(self, meth):
+                sig = inspect.signature(meth)
+                types = []
+                for name, parm in sig.parameters.items():
+                    if name == 'self':
+                        continue
+                    if parm.annotation is inspect.Parameter.empty:
+                        raise TypeError(
+                            'Argument {} must be annotated with a type'.format(name)
+                        )
+                    if not isinstance(parm.annotation, type):
+                        raise TypeError(
+                            'Argument {} annotation must be a type'.format(name)
+                        )
+                    if parm.default is not inspect.Parameter.empty:
+                        self._methods[tuple(types)] = meth
+                    types.append(parm.annotation)
+
+                self._methods[tuple(types)] = meth
+
+            def __call__(self, *args):
+                types = tuple(type(arg) for arg in args[1:])
+                meth = self._methods.get(types, None)
+                if meth:
+                    return meth(*args)
+                else:
+                    raise TypeError('No matching method for types {}'.format(types))
+
+                def __get__(self, instance, cls):
+                    '''
+                    Descriptor method needed to make calls work in a class
+                    '''
+
+                if instance is not None:
+                    return types.MethodType(self, instance)
+                else:
+                    return self

@@ -75,6 +75,7 @@ def section_1_3():
     在指定了deque的maxlen属性后，deque中最多保留maxlen个元素，多余元素将按照插入的顺序
     被删除。
     """
+    from collections import deque
 
     def test1():
         """
@@ -82,7 +83,6 @@ def section_1_3():
         yield, as shown in this recipe’s solution. This decouples the process of searching
         from the code that uses the results.
         """
-        from collections import deque
 
         def search(lines, pattern, history=5):
             previous_lines = deque(maxlen=history)
@@ -97,6 +97,10 @@ def section_1_3():
                     print(pline, end="")
                 print(line, end="")
                 print('-' * 20)
+
+    def test2():
+        # TODO deque常用方法
+        d = deque()
 
 
 def section_1_4():
@@ -251,7 +255,7 @@ def section_1_9():
         print(a.items() | b.items())
         print(set(a.values()) & set(b.values()))
 
-    def test1():
+    def test2():
         a = {
             'x': 1,
             'y': 2,
