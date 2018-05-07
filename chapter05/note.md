@@ -1,14 +1,18 @@
-## chapter 5.1
+## chapter 5.1 (*)
 
-## chapter 5.2
+文件的基本输入输出。
 
-## chapter 5.3
+## chapter 5.2 (*)
+
+print(file=output) print指定输出文件。
+
+## chapter 5.3 (*)
 
 文件输出时使用不同的行分隔符和行结束符。
 
 print(content, sep=',', end='\n')
 
-## chapter 5.4
+## chapter 5.4 (*)
 
 输入输出二进制数据。
 
@@ -31,3 +35,13 @@ io.StringIO() / io.BytesIO()
 读写压缩文件。
 
 gzip / bz2
+
+## chapter 5.8
+
+按照固定长度迭代遍历文件。
+
+iter(functools.partial(f.read, RECORD_SIZE), b'')
+
+## chapter 5.9
+
+readinto() 将二进制数据直接读入一个可变缓存中。

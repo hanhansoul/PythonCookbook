@@ -17,32 +17,47 @@ def with_context_expression():
         with context_expression [as target(s)]:
             with-body
     """
-    with open('input.txt', 'r') as fin:
+    with open('data/input.txt', 'r') as fin:
         for l in fin:
             print(l)
+
+
+def std_input_output():
+    s = input()
+    print(s)
+
+
+def reading_file():
+    with open("data/input") as f:
+        # print(f.read(5))
+        # print(f.readline())
+        # print(f.readlines())
+        for line in f:
+            print(line)
 
 
 def chapter_5_1():
     """
     5.1. reading and writing text data
-        you need to read or write text data, possibly in different text encodings such as ascii, utf-8, or utf-16.
+        you need to read or write text data, possibly in different text encodings such as
+        ascii, utf-8, or utf-16.
     """
 
     def test1():
-        with open("input.txt", "rt") as f:
+        with open("data/input.txt", "rt") as f:
             data = f.read()
             print(data)
 
-        with open("input.txt", "rt") as f:
+        with open("data/input.txt", "rt") as f:
             for line in f:
                 print(line)
 
     def test2():
         text = "abcdefghijklm"
-        with open("output.txt", "wt") as f:
+        with open("data/output.txt", "wt") as f:
             f.write(text)
 
-        with open("output.txt", "wt") as f:
+        with open("data/output.txt", "wt") as f:
             print(text, file=f)
 
 
@@ -50,7 +65,7 @@ def chapter_5_2():
     """
     5.2. Printing to a File
     """
-    with open('output.txt', 'wt') as fout:
+    with open('data/output.txt', 'wt') as fout:
         print('redirect print to files', file=fout)
 
 
@@ -71,44 +86,50 @@ def chapter_5_4():
         You need to read or write binary data, such as that found in images, sound files, and so on.
         open() with 'rb' & 'wb'
     """
-    with open('binary_file.bin', 'wb') as fout:
-        fout.write(b'BINARY IO')
-    with open('binary_file.bin', 'rb') as fin:
-        data = fin.read()
-        print(data)
 
-    '''
-    difference between byte strings and text strings
-    '''
-    # Text string
-    t = 'Hello World'
-    print([x for x in t])
-    b = b'Hello world'
-    print([x for x in b])
+    def test1():
+        with open('data/binary_file.bin', 'wb') as fout:
+            fout.write(b'BINARY IO')
+        with open('data/binary_file.bin', 'rb') as fin:
+            data = fin.read()
+            print(data)
 
-    '''
-        If you ever need to read or write text from a binary-mode file, make sure you remember
-    to decode or encode it.
-    '''
-    with open('binary_file.bin', 'wb') as fout:
-        text = 'Hello World'
-        fout.write(text.encode('utf-8'))
-    with open('binary_file.bin', 'rb') as fin:
-        data = fin.read(16)
-        text = data.decode('utf-8')
-        print(text, data, sep='\n')
-    '''
-        objects such as arrays and C structures can be used for writing without any kind of intermediate
-    conversion to a bytes object.
-    '''
-    import array
-    nums = array.array('i', [1, 2, 3, 4])
-    with open('binary_file.bin', 'wb') as fout:
-        fout.write(nums)
-    out = array.array('i', [0] * 10)
-    with open('binary_file.bin', 'rb') as fin:
-        fin.readinto(out)
-        print(out)
+    def test2():
+        """
+        difference between byte strings and text strings
+        """
+        # Text string
+        t = 'Hello World'
+        print([x for x in t])
+        b = b'Hello world'
+        print([x for x in b])
+
+    def test3():
+        """
+            If you ever need to read or write text from a binary-mode file, make sure you remember
+        to decode or encode it.
+        """
+        with open('data/binary_file.bin', 'wb') as fout:
+            text = 'Hello World'
+            fout.write(text.encode('utf-8'))
+        with open('data/binary_file.bin', 'rb') as fin:
+            data = fin.read(16)
+            text = data.decode('utf-8')
+            print(text, data, sep='\n')
+
+    def test4():
+        """
+            objects such as arrays and C structures can be used for writing without any kind of intermediate
+        conversion to a bytes object.
+        """
+        import array
+        nums = array.array('i', [1, 2, 3, 4])
+        with open('data/binary_file.bin', 'wb') as fout:
+            fout.write(nums)
+        out = array.array('i', [0] * 10)
+        with open('data/binary_file.bin', 'rb') as fin:
+            fin.readinto(out)
+            print(out)
 
 
 def chapter_5_5():
@@ -117,9 +138,9 @@ def chapter_5_5():
         'x' mode in open()
         Python 3 specific extension to the open() function.
     """
-    with open('new_output.txt', 'xt') as fout:
+    with open('data/new_output.txt', 'xt') as fout:
         fout.write('test')
-    with open('new_output.txt', 'rt') as fin:
+    with open('data/new_output.txt', 'rt') as fin:
         data = fin.read()
         print(data)
 
@@ -135,16 +156,18 @@ def chapter_5_6():
     with code that requires the use of a real system-level file such as a file, pipe, or socket.
     """
     import io
-    s = io.StringIO()
-    s.write('Hello World\n')
-    print(s)
-    print('This is a test', file=s)
-    # Get all of the data written so far
-    print(s.getvalue())
-    # Wrap a file interface around an existing string
-    s = io.StringIO('Hello_World\n')
-    print(s.read(4))
-    print(s.read())
+
+    def test1():
+        s = io.StringIO()
+        s.write('Hello World\n')
+        print(s)
+        print('This is a test', file=s)
+        # Get all of the data written so far
+        print(s.getvalue())
+        # Wrap a file interface around an existing string
+        s = io.StringIO('Hello_World\n')
+        print(s.read(4))
+        print(s.read())
 
 
 def chapter_5_7():
@@ -155,22 +178,23 @@ def chapter_5_7():
     """
     import gzip
     import bz2
+
     def test1():
         text = "abcdefghijklmnopqrstuvwxyz123456789"
         # gzip compression
-        with gzip.open('somefile.gz', 'wt') as f:
+        with gzip.open('data/somefile.gz', 'wt') as f:
             f.write(text)
         # bz2 compression
-        with bz2.open('somefile.bz2', 'wt') as f:
+        with bz2.open('data/somefile.bz2', 'wt') as f:
             f.write(text)
 
     def test2():
         # gzip compression
-        with gzip.open('somefile.gz', 'rt') as f:
+        with gzip.open('data/somefile.gz', 'rt') as f:
             text = f.read()
             print(text)
         # bz2 compression
-        with bz2.open('somefile.bz2', 'rt') as f:
+        with bz2.open('data/somefile.bz2', 'rt') as f:
             text = f.read()
             print(text)
 
@@ -185,7 +209,7 @@ def chapter_5_8():
     """
     from functools import partial
     RECORD_SIZE = 32
-    with open('input.data', 'rb') as f:
+    with open('data/input.data', 'rb') as f:
         records = iter(partial(f.read, RECORD_SIZE), b'')
         for r in records:
             print(r)
@@ -200,13 +224,43 @@ def chapter_5_9():
     """
     import os.path
 
-    def read_into_buffer(filename):
-        buf = bytearray(os.path.getsize(filename))
-        with open(filename, 'rb') as fin:
-            fin.readinto(buf)
-        return buf
+    def test1():
+        def read_into_buffer(filename):
+            buf = bytearray(os.path.getsize(filename))
+            with open(filename, 'rb') as fin:
+                fin.readinto(buf)
+            return buf
 
-    with open('sample.bin', 'wb') as fout:
-        fout.write(b'Hello World')
-    buf = read_into_buffer('sample.bin')
-    print(buf)
+        with open('data/sample.bin', 'wb') as fout:
+            fout.write(b'Hello World')
+        buf = read_into_buffer('data/sample.bin')
+        print(buf)
+
+    def test2():
+        record_size = 32
+        buf = bytearray(record_size)
+        with open("data/input.bin", "rb") as f:
+            while True:
+                n = f.readinto(buf)
+                print(buf)
+                if n < record_size:
+                    break
+
+
+def chapter_5_10():
+    """
+    内存映射
+    """
+    import os
+    import mmap
+
+    def test1():
+        def memeory_map(filename, access=mmap.ACCESS_WRITE):
+            size = os.path.getsize(filename)
+            fd = os.open(filename, os.O_RDWR)
+            return mmap.mmap(fd, size, access=access)
+
+        size = 1000000
+        with open('data', 'wb') as f:
+            f.seek(size - 1)
+            f.write(b'\x00')
