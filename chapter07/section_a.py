@@ -2,12 +2,20 @@ def chapter_7_1():
     """
     7.1. Writing Functions That Accept Any Number of Arguments
 
+    使用一个*-arg来接受任意数量的positional参数
+    使用一个**-arg来接受任意数量的keyword参数
+
     变长的函数参数列表
     *args 以tuple参数形式传入
     **kwargs 以dict参数形式传入
 
-    func(positional-arg, *-arg, keyword-only-arg, **-arg)
-    func(positional-only-arg, [positional-or-keyword-arg], keyword-only-arg)
+    # func(positional-arg, *-arg, keyword-only-arg, **-arg)
+    def a(x, *args, y, **kwargs):
+        pass
+
+    # func(positional-only-arg, [positional-or-keyword-arg], keyword-only-arg)
+    def b(*args, x, **kwargs):
+        pass
 
     函数中，*运算符将[]或()拆分为positional-arg，**运算符将{}拆分为keyword-arg。
     ll = [1, 2, 3, 4]
@@ -15,9 +23,9 @@ def chapter_7_1():
     dd = {'a': 1, 'b': 2, 'c': 3}
     test1(*ll, *tt, **dd) => test1(1, 2, 3, 4, 10, 20, 30, 40, a=1, b=2, c=3)
 
-    positional-arg必须在keyword-arg之前提供
-    *args只能放在最后一个positional-arg之后，作为最后的positional-arg
-    **kwargs只能放在所有参数之后
+    positional-arg必须在keyword-arg之前出现。
+    *args只能放在最后一个positional-arg之后，作为最后的positional-arg。
+    **kwargs只能放在所有参数之后。
     """
 
     def test1(*args, **kwargs):
