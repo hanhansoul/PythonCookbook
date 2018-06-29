@@ -354,10 +354,6 @@ def chapter_7_8():
             apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
 
 
-
-
-
-
 def chapter_7_11():
     """
     !!!

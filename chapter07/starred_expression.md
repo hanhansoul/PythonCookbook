@@ -14,17 +14,6 @@
 
     dict(**{'x': 1}, y=2, **{z': 3})
 
-unpacking可以在tuple、list、set和dictionary中使用。
-
-    >>> *range(4), 4
-    (0, 1, 2, 3, 4)
-    >>> [*range(4), 4]
-    [0, 1, 2, 3, 4]
-    >>> {*range(4), 4}
-    {0, 1, 2, 3, 4}
-    >>> {'x': 1, **{'y': 2}}
-    {'x': 1, 'y': 2}
-
 当你需要unpack多个可迭代对象
 
 ---
@@ -35,7 +24,7 @@ unpacking可以在tuple、list、set和dictionary中使用。
 
 ## *表达式与**表达式
 
-*表达式用于将任何可迭代对象进行拆包，包括tuple、list、string、file、迭代器与生成器，返回的是一个tuple。
+*表达式用于将任何可迭代对象进行拆包，包括tuple、list、string、file、迭代器与生成器
 
 *range(4),
 
@@ -72,24 +61,6 @@ func(**dict(a=1,b=2,c=3))
 
 *args接受任意数量的positional-arg。
 
-func(positional-args, variable-positional-args, keyword-args, variable-keyword-args)
-
-call                 ::=  primary "(" [argument_list [","] | comprehension] ")"
-
-argument_list        ::=  positional_arguments ["," starred_and_keywords]
-                            ["," keywords_arguments]
-                          | starred_and_keywords ["," keywords_arguments]
-                          | keywords_arguments
-
-positional_arguments ::=  ["*"] expression ("," ["*"] expression)*
-
-starred_and_keywords ::=  ("*" expression | keyword_item)
-                          ("," "*" expression | "," keyword_item)*
-
-keywords_arguments   ::=  (keyword_item | "**" expression)
-                          ("," keyword_item | "," "**" expression)*
-
-keyword_item         ::=  identifier "=" expression
 
 ## 函数实参
 
